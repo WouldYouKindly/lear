@@ -5,6 +5,8 @@
   class Player {
     play(note) {
       synth.triggerAttack(note);
+      const answerDiv = document.getElementById('answer');
+      answerDiv.innerText += ` ${note.replace("4", "")}`
     }
     stop() {
       synth.triggerRelease();
@@ -14,40 +16,36 @@
 </script>
 
 <div class='mainContainer'>
-  <button class='wkey' on:mousedown={() => player.play("C4")} on:mouseup={player.stop}>C
-    <button class='bkey b1' on:mousedown={() => player.play("C#4")} on:mouseup={player.stop}>C#</button>
+  <button class='wkey' on:mousedown={() => player.play("C4")} on:mouseup={player.stop}>
+    <button class='bkey b1' on:mousedown|stopPropagation|preventDefault={() => player.play("C#4")} on:mouseup={player.stop} />
   </button>
 
-  <button class='wkey' on:mousedown={() => player.play("D4")} on:mouseup={player.stop}>D
-    <button class='bkey' on:mousedown={() => player.play("D#4")} on:mouseup={player.stop}>D#</button>
+  <button class='wkey' on:mousedown={() => player.play("D4")} on:mouseup={player.stop}>
+    <button class='bkey' on:mousedown|stopPropagation|preventDefault={() => player.play("D#4")} on:mouseup={player.stop} />
   </button>
 
-  <button class='wkey' on:mousedown={() => player.play("E4")} on:mouseup={player.stop}>E</button>
-  <button class='wkey' on:mousedown={() => player.play("F4")} on:mouseup={player.stop}>F
-    <button class='bkey' on:mousedown={() => player.play("F#4")} on:mouseup={player.stop}>F#</button>
+  <button class='wkey' on:mousedown={() => player.play("E4")} on:mouseup={player.stop} />
+  <button class='wkey' on:mousedown={() => player.play("F4")} on:mouseup={player.stop}>
+    <button class='bkey' on:mousedown|stopPropagation|preventDefault={() => player.play("F#4")} on:mouseup={player.stop} />
   </button>
 
-  <button class='wkey' on:mousedown={() => player.play("G4")} on:mouseup={player.stop}>G
-    <button class='bkey' on:mousedown={() => player.play("G#4")} on:mouseup={player.stop}>G#</button>
+  <button class='wkey' on:mousedown={() => player.play("G4")} on:mouseup={player.stop}>
+    <button class='bkey' on:mousedown|stopPropagation|preventDefault={() => player.play("G#4")} on:mouseup={player.stop} />
   </button>
 
-  <button class='wkey' on:mousedown={() => player.play("A4")} on:mouseup={player.stop}>A
-    <button class='bkey' on:mousedown={() => player.play("A#4")} on:mouseup={player.stop}>A#</button>
+  <button class='wkey' on:mousedown={() => player.play("A4")} on:mouseup={player.stop}>
+    <button class='bkey' on:mousedown|stopPropagation|preventDefault={() => player.play("A#4")} on:mouseup={player.stop} />
   </button>
 
-  <button class='wkey' on:mousedown={() => player.play("B4")} on:mouseup={player.stop}>B</button>
-  <button class='wkey' on:mousedown={() => player.play("C5")} on:mouseup={player.stop}>C</button>
+  <button class='wkey' on:mousedown={() => player.play("B4")} on:mouseup={player.stop}></button>
+  <button class='wkey' on:mousedown={() => player.play("C5")} on:mouseup={player.stop}></button>
 </div>
 
 <div class="blackContainer">
-  
-  
-  
   <div class='bkey'></div>
-  
-  
 </div>
 
+<div id='answer'></div>
 <!-- Press a note, move cursor away from the keyboard, without letting go. Note still stops. -->
 <svelte:document on:mouseup={player.stop}></svelte:document>
 
@@ -97,13 +95,13 @@
     
 
     position: relative;
-    left: 50%;
+    left: 67%;
     top: -60px;
     z-index: 3;
   }
 
-  .b1 {
-    
+  .bkey:active {
+    background-color: violet;
   }
   
 </style>
