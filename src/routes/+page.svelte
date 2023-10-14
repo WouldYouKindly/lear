@@ -1,2 +1,93 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+  import * as Tone from 'tone'
+  const synth = new Tone.Synth().toDestination();
+
+  class Player {
+    play(note) {
+      synth.triggerAttack(note);
+    }
+    stop() {
+      synth.triggerRelease();
+    }
+  }
+  const player = new Player();
+</script>
+
+<div class='mainContainer'>
+<button class='wkey' on:mousedown={() => player.play("C4")} on:mouseup={player.stop}>C</button>
+
+<button class='wkey' on:mousedown={() => player.play("D4")} on:mouseup={player.stop}>D</button>
+
+<button class='wkey' on:mousedown={() => player.play("E4")} on:mouseup={player.stop}>E</button>
+<button class='wkey' on:mousedown={() => player.play("F4")} on:mouseup={player.stop}>F</button>
+
+<button class='wkey' on:mousedown={() => player.play("G4")} on:mouseup={player.stop}>G</button>
+
+<button class='wkey' on:mousedown={() => player.play("A4")} on:mouseup={player.stop}>A</button>
+
+<button class='wkey' on:mousedown={() => player.play("B4")} on:mouseup={player.stop}>B</button>
+<button class='wkey' on:mousedown={() => player.play("C5")} on:mouseup={player.stop}>C</button>
+</div>
+
+<div class="blackContainer">
+  <button class='bkey' on:mousedown={() => player.play("C#4")} on:mouseup={player.stop}>C#</button>
+  <button class='bkey' on:mousedown={() => player.play("D#4")} on:mouseup={player.stop}>D#</button>
+  <button class='bkey' on:mousedown={() => player.play("F#4")} on:mouseup={player.stop}>F#</button>
+  <div class='bkey'></div>
+  <button class='bkey' on:mousedown={() => player.play("G#4")} on:mouseup={player.stop}>G#</button>
+  <button class='bkey' on:mousedown={() => player.play("A#4")} on:mouseup={player.stop}>A#</button>
+</div>
+
+<!-- Press a note, move cursor without  -->
+<svelte:document on:mouseup={player.stop}></svelte:document>
+
+
+<style>
+  :root {
+    --wWidth: 46px;
+  }
+  .mainContainer {
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .blackContainer {
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    
+  }
+
+  .wkey {
+    height: 290px;
+    width: 46px;
+    background-color: white;
+    border: black 3px solid;
+    border-radius: 3px;
+    margin-right: -3px;
+  }
+
+  .wkey:active {
+    background-color: violet;
+  }
+
+  .bkey {
+    height: 170px;
+    width: 18px;
+    background-color: black;
+    border: black 3px solid;
+    border-radius: 3px;
+    
+    position: absolute;
+    top: 0;
+    z-index: 3;
+  }
+
+  .b1 {
+    left: 300px;
+  }
+  
+</style>
