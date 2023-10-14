@@ -14,31 +14,41 @@
 </script>
 
 <div class='mainContainer'>
-<button class='wkey' on:mousedown={() => player.play("C4")} on:mouseup={player.stop}>C</button>
+  <button class='wkey' on:mousedown={() => player.play("C4")} on:mouseup={player.stop}>C
+    <button class='bkey b1' on:mousedown={() => player.play("C#4")} on:mouseup={player.stop}>C#</button>
+  </button>
 
-<button class='wkey' on:mousedown={() => player.play("D4")} on:mouseup={player.stop}>D</button>
+  <button class='wkey' on:mousedown={() => player.play("D4")} on:mouseup={player.stop}>D
+    <button class='bkey' on:mousedown={() => player.play("D#4")} on:mouseup={player.stop}>D#</button>
+  </button>
 
-<button class='wkey' on:mousedown={() => player.play("E4")} on:mouseup={player.stop}>E</button>
-<button class='wkey' on:mousedown={() => player.play("F4")} on:mouseup={player.stop}>F</button>
+  <button class='wkey' on:mousedown={() => player.play("E4")} on:mouseup={player.stop}>E</button>
+  <button class='wkey' on:mousedown={() => player.play("F4")} on:mouseup={player.stop}>F
+    <button class='bkey' on:mousedown={() => player.play("F#4")} on:mouseup={player.stop}>F#</button>
+  </button>
 
-<button class='wkey' on:mousedown={() => player.play("G4")} on:mouseup={player.stop}>G</button>
+  <button class='wkey' on:mousedown={() => player.play("G4")} on:mouseup={player.stop}>G
+    <button class='bkey' on:mousedown={() => player.play("G#4")} on:mouseup={player.stop}>G#</button>
+  </button>
 
-<button class='wkey' on:mousedown={() => player.play("A4")} on:mouseup={player.stop}>A</button>
+  <button class='wkey' on:mousedown={() => player.play("A4")} on:mouseup={player.stop}>A
+    <button class='bkey' on:mousedown={() => player.play("A#4")} on:mouseup={player.stop}>A#</button>
+  </button>
 
-<button class='wkey' on:mousedown={() => player.play("B4")} on:mouseup={player.stop}>B</button>
-<button class='wkey' on:mousedown={() => player.play("C5")} on:mouseup={player.stop}>C</button>
+  <button class='wkey' on:mousedown={() => player.play("B4")} on:mouseup={player.stop}>B</button>
+  <button class='wkey' on:mousedown={() => player.play("C5")} on:mouseup={player.stop}>C</button>
 </div>
 
 <div class="blackContainer">
-  <button class='bkey' on:mousedown={() => player.play("C#4")} on:mouseup={player.stop}>C#</button>
-  <button class='bkey' on:mousedown={() => player.play("D#4")} on:mouseup={player.stop}>D#</button>
-  <button class='bkey' on:mousedown={() => player.play("F#4")} on:mouseup={player.stop}>F#</button>
+  
+  
+  
   <div class='bkey'></div>
-  <button class='bkey' on:mousedown={() => player.play("G#4")} on:mouseup={player.stop}>G#</button>
-  <button class='bkey' on:mousedown={() => player.play("A#4")} on:mouseup={player.stop}>A#</button>
+  
+  
 </div>
 
-<!-- Press a note, move cursor without  -->
+<!-- Press a note, move cursor away from the keyboard, without letting go. Note still stops. -->
 <svelte:document on:mouseup={player.stop}></svelte:document>
 
 
@@ -81,13 +91,19 @@
     border: black 3px solid;
     border-radius: 3px;
     
-    position: absolute;
-    top: 0;
+  
+    /*position: absolute;
+    top: 0;*/
+    
+
+    position: relative;
+    left: 50%;
+    top: -60px;
     z-index: 3;
   }
 
   .b1 {
-    left: 300px;
+    
   }
   
 </style>
