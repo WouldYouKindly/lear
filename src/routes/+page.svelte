@@ -37,7 +37,7 @@
     answerRevealed = false;
     playQuestion(currentQuestion);
 
-    answerBoxes = [currentQuestion[0], ...range(numNotes-1).map(() => '?')];
+    answerBoxes = range(numNotes).map(() => '?');
   }
 
   function playCurrentQuestion() {
@@ -85,9 +85,8 @@
 
   const zip = (a, b) => a.map((k, i) => [k, b[i]]);
 
-  function onKeyDown(event) {
-    if (event.key === "Backspace") {
-      const newBoxes = Array(answerBoxes.length).fill(null);
+  function removeLastNoteFromAnswer() {
+    const newBoxes = Array(answerBoxes.length).fill(null);
       let found = false;
       for (let i = answerBoxes.length-1; i >= 0; i--) {
         if (answerBoxes[i] !== '?' && !found) {
@@ -98,6 +97,15 @@
         }
       }
       answerBoxes = newBoxes;
+  }
+
+  function onKeyDown(event) {
+    console.log(event);
+    if (event.key === "Backspace") {
+      removeLastNoteFromAnswer();
+    } else if (event.key === " ") {
+      event.preventDefault();
+      playCurrentQuestion();
     }
   }
 </script>
