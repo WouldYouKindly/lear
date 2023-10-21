@@ -1,5 +1,8 @@
 <script>
   import * as Tone from "tone";
+  import Octave from './Octave.svelte';
+
+
   const synth = new Tone.Synth().toDestination();
   let answerBoxes = newAnswerBox(4);
   let currentQuestion = []
@@ -222,6 +225,8 @@
 <svelte:document on:mouseup={stop} />
 
 <svelte:window on:keydown={onKeyDown} />
+
+<Octave />
 
 <style>
   .resultsContainer {

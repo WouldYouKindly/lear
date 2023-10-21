@@ -1,0 +1,104 @@
+<head>
+    <style type="text/css">
+        #container {
+            display: flex;
+            width: 350px;
+            position: relative;
+            border-left: 2px pink solid;
+            border-right: 2px pink solid;
+            border-bottom: 2px pink solid;
+        }
+        .white {
+            background-color: rosybrown;
+            height: 180px;
+            width: 50px;
+            border: 1px pink solid;
+        }
+        .white:hover {
+            background-color:rgb(162, 122, 122);
+        }
+
+        .white:active {
+            --dog: rgb(182, 134, 134);
+            background:  linear-gradient(90deg, var(--dog), rosybrown, var(--dog));
+            height: 183px;
+        }
+
+        p {
+            position: relative;
+            top: 85%;
+            left: 35%;
+            color: rgb(110, 101, 101);
+            font-size: 11;
+        }
+        .black {
+            background-color: black;
+            z-index: 3;
+            position: absolute;
+            height: 117px;
+            width: 32px;
+        }
+
+        .black:hover .blacksmall {
+            background-color: rgb(63, 63, 63);
+            
+        }
+
+        .black:active .blacksmall { 
+            background-color: rgb(43, 43, 43);
+            width: 78%;
+            height: 96%;
+        }
+
+        .black0 {
+            left: 9%;
+        }
+        .black1 {
+            left: 24.5%;
+        }
+        .black2 {
+            left: 51.5%;
+        }
+        .black3 {
+            left: 66.7%;
+        }
+        .black4 {
+            left: 82%;
+        }
+        .blacksmall {
+            position: relative;
+            margin-right: auto;
+            margin-left: auto;
+            width: 80%;
+            height: 95%;
+            background-color: rgb(43, 43, 43);
+        } 
+        
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="white" onmousedown="onMouseDown"><p>C4</p></div>
+        <div class="black black0">
+            <div class="blacksmall"></div>
+        </div>
+        <div class="white"></div>
+        <div class="black black1">
+            <div class="blacksmall"></div>
+        </div>
+        <div class="white"></div>
+        <div class="white"></div>
+        <div class="black black2">
+            <div class="blacksmall"></div>
+        </div>
+        <div class="white"></div>
+        <div class="black black3">
+            <div class="blacksmall"></div>
+        </div>
+        <div class="white"></div>
+        <div class="black black4">
+            <div class="blacksmall"></div>
+        </div>
+        <div class="white"></div>
+    </div>
+</body>
