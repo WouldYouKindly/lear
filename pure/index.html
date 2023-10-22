@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Lear</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <script type="module">
+        import PianoOctave from './piano-octave.js';
+        import { play, stop } from './doge.js';
+        
+
+        if (!customElements.get('piano-octave')) {
+            customElements.define('piano-octave', PianoOctave)
+        }
+
+        const octaves = document.getElementsByTagName('piano-octave');
+        for (let octave of octaves) {
+            octave.addEventListener("pianokeydown", evt => play(evt.detail));
+            octave.addEventListener("pianokeyup", evt => stop());
+        }
+        
+        // So that I can press a note, move cursor away from the keyboard and then release. 
+        // Without it, the note would keep going forever.
+        document.onmouseup = stop;
+    </script>
+  </head>
+
+  <body>
+    <piano-octave data-octave="3"></piano-octave>
+  </body>
+  
+</html>
