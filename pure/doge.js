@@ -1,5 +1,6 @@
-
+// Tone comes from index.html
 const synth = new Tone.Synth().toDestination();
+
 let answerBoxes = newAnswerBox(4);
 let currentQuestion = []
 const results = Array(15).fill(null);

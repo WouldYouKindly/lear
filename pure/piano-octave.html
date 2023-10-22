@@ -6,13 +6,13 @@
             position: relative;
             border-left: 2px pink solid;
             border-right: 2px pink solid;
-            border-bottom: 2px pink solid;
         }
         .white {
             background-color: rosybrown;
             height: 180px;
             width: 50px;
-            border: 1px pink solid;
+            border: 2px pink solid;
+            border-bottom: 2px pink solid;
         }
         .white:hover {
             background-color:rgb(162, 122, 122);
@@ -20,7 +20,9 @@
         .white:active {
             --dog: rgb(182, 134, 134);
             background:  linear-gradient(90deg, var(--dog), rosybrown, var(--dog));
-            height: 183px;
+            height: 182px;
+            border-bottom: none;
+            /* border-bottom: none; */
         }
         p {
             position: relative;

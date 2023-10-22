@@ -226,7 +226,7 @@
 
 <svelte:window on:keydown={onKeyDown} />
 
-<Octave />
+<Octave play={play} stop={stop}/>
 
 <style>
   .resultsContainer {

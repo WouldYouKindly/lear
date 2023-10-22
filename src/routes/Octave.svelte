@@ -1,13 +1,17 @@
-
+<script>
+    export let play;
+    export let stop;
+    export let n = 4;
+    const sound = (note) => play(`${note}${n}`);  // like play('C4')
+</script>
 
 <style>
     #container {
         display: flex;
         width: 350px;
         position: relative;
-        border-left: 2px pink solid;
-        border-right: 2px pink solid;
-        border-bottom: 2px pink solid;
+        border: 2px pink solid;
+        border-top: 0px;
     }
     .white {
         background-color: rosybrown;
@@ -40,7 +44,7 @@
         width: 32px;
     }
 
-    .black:hover .blacksmall {
+    .black:hover .blacksmll {
         background-color: rgb(63, 63, 63);
     }
 
@@ -76,26 +80,26 @@
 </style>
 
 <div id="container">
-    <div class="white"><p>C4</p></div>
-    <div class="black black0">
+    <div class="white" on:mousedown={() => sound("C")} on:mouseup={stop}><p>C{n}</p></div>
+    <div class="black black0" on:mousedown={() => sound("C#")} on:mouseup={stop}>
         <div class="blacksmall"></div>
     </div>
-    <div class="white"></div>
-    <div class="black black1">
+    <div class="white" on:mousedown={() => sound("D")} on:mouseup={stop}></div>
+    <div class="black black1" on:mousedown={() => sound("D#")} on:mouseup={stop}>
         <div class="blacksmall"></div>
     </div>
-    <div class="white"></div>
-    <div class="white"></div>
-    <div class="black black2">
+    <div class="white" on:mousedown={() => sound("E")} on:mouseup={stop}></div>
+    <div class="white" on:mousedown={() => sound("F")} on:mouseup={stop}></div>
+    <div class="black black2" on:mousedown={() => sound("F#")} on:mouseup={stop}>
         <div class="blacksmall"></div>
     </div>
-    <div class="white"></div>
-    <div class="black black3">
+    <div class="white" on:mousedown={() => sound("G")} on:mouseup={stop}></div>
+    <div class="black black3" on:mousedown={() => sound("G#")} on:mouseup={stop}>
         <div class="blacksmall"></div>
     </div>
-    <div class="white"></div>
-    <div class="black black4">
+    <div class="white" on:mousedown={() => sound("A")} on:mouseup={stop}></div>
+    <div class="black black4" on:mousedown={() => sound("A#")} on:mouseup={stop}>
         <div class="blacksmall"></div>
     </div>
-    <div class="white"></div>
+    <div class="white" on:mousedown={() => sound("B")} on:mouseup={stop}></div>
 </div>

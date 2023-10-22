@@ -5,11 +5,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
     <script type="module">
         import PianoOctave from './piano-octave.js';
+        import Questions from './questions.js';
         import { play, stop } from './doge.js';
         
-
         if (!customElements.get('piano-octave')) {
-            customElements.define('piano-octave', PianoOctave)
+            customElements.define('piano-octave', PianoOctave);
+            customElements.define('questions-row', Questions);
         }
 
         const octaves = document.getElementsByTagName('piano-octave');
@@ -22,10 +23,25 @@
         // Without it, the note would keep going forever.
         document.onmouseup = stop;
     </script>
+
+    <style>
+        #piano {
+            display: flex;
+            justify-content: center;
+        }
+        .questions {
+            margin-bottom: 20px;
+        }
+    </style>
   </head>
 
   <body>
-    <piano-octave data-octave="3"></piano-octave>
+    <div class="questions"><questions-row></questions-row></div>
+
+    <div id="piano">
+        <piano-octave data-octave="3"></piano-octave>
+        <piano-octave data-octave="4"></piano-octave>
+    </div>
   </body>
   
 </html>
