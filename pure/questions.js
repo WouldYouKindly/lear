@@ -12,7 +12,6 @@ const setup = async () => {
             const clone = template.content.cloneNode(true);
             const containerDiv = clone.children[1];
 
-
             shadowRoot.appendChild(clone);
         }
     }
