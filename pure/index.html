@@ -3,25 +3,46 @@
   <head>
     <title>Lear</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/abcjs@6.0.0/dist/abcjs-basic-min.js"></script>
     <script type="module">
         import PianoOctave from './piano-octave.js';
         import Questions from './questions.js';
         import { play, stop } from './doge.js';
+        import { Staff } from './staff.js';
         
         if (!customElements.get('piano-octave')) {
             customElements.define('piano-octave', PianoOctave);
             customElements.define('questions-row', Questions);
         }
+        
+        const staff = new Staff("staff");
 
         const octaves = document.getElementsByTagName('piano-octave');
         for (let octave of octaves) {
-            octave.addEventListener("pianokeydown", evt => play(evt.detail));
+            octave.addEventListener("pianokeydown", evt => {
+                play(evt.detail);
+                staff.add(evt.detail[0]);
+            });
             octave.addEventListener("pianokeyup", evt => stop());
         }
         
         // So that I can press a note, move cursor away from the keyboard and then release. 
         // Without it, the note would keep going forever.
         document.onmouseup = stop;
+
+        staff.render();
+
+        function onKeyDown(event) {
+            // console.log(event);
+            if (event.key === "Backspace") {
+                staff.remove();
+            } else if (event.key === " ") {
+                event.preventDefault();
+                ;
+            }
+        }
+
+        window.onkeydown = onKeyDown;
     </script>
 
     <style>
@@ -29,14 +50,19 @@
             display: flex;
             justify-content: center;
         }
-        .questions {
-            margin-bottom: 20px;
+
+        #staff {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
         }
     </style>
   </head>
 
   <body>
     <div class="questions"><questions-row></questions-row></div>
+
+    <div id="staff"></div>
 
     <div id="piano">
         <piano-octave data-octave="3"></piano-octave>
