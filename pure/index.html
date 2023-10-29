@@ -1,31 +1,35 @@
 <!doctype html>
 <html>
-  <head>
+
+<head>
     <title>Lear</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/abcjs@6.0.0/dist/abcjs-basic-min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vexflow/build/cjs/vexflow.js"></script>
     <script type="module">
         import PianoOctave from './piano-octave.js';
         import Questions from './questions.js';
-        import { play, stop } from './doge.js';
+        import { start, stop, playSequence } from './sound.js';
+        import { nRandom, zip } from './utils.js';
         import { Staff } from './staff.js';
-        
+                
         if (!customElements.get('piano-octave')) {
             customElements.define('piano-octave', PianoOctave);
             customElements.define('questions-row', Questions);
         }
-        
-        const staff = new Staff("staff");
+
+        const staff = new Staff("staff", ABCJS);
 
         const octaves = document.getElementsByTagName('piano-octave');
         for (let octave of octaves) {
             octave.addEventListener("pianokeydown", evt => {
-                play(evt.detail);
-                staff.add(evt.detail);
+                const note = evt.detail;
+                start(note);
+                staff.add(note);
             });
             octave.addEventListener("pianokeyup", evt => stop());
         }
-        
+
         // So that I can press a note, move cursor away from the keyboard and then release. 
         // Without it, the note would keep going forever.
         document.onmouseup = stop;
@@ -34,7 +38,8 @@
 
         function onKeyDown(event) {
             // console.log(event);
-            if (event.key === "Backspace") {
+            // TODO The latter probably won't work on Windows, need to add platform-aware Ctrl handling.
+            if (event.key === "Backspace" || (event.key === 'z' && event.metaKey)) {
                 staff.remove();
             } else if (event.key === " ") {
                 event.preventDefault();
@@ -43,6 +48,56 @@
         }
 
         window.onkeydown = onKeyDown;
+
+
+        // Questions 
+        const notes = ["C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6"];
+        let currentQuestion = null;
+        const nextButton = document.getElementById("button-next");
+        const submitButton = document.getElementById("button-submit");
+        const questionsRow = document.getElementsByTagName('questions-row')[0];
+
+        const nextQuestion = () => {
+            if (currentQuestion === null) {
+                currentQuestion = nRandom(notes, 4);
+                console.log('Question', currentQuestion);
+                nextButton.innerText = "Repeat";
+            }
+            staff.clear();
+            playSequence(currentQuestion);
+        }
+
+        function compare(question, answer) {
+            const numCorrect = zip(question, answer).filter(([a, b]) => a === b).length;
+            const requiredForSemi = Math.ceil((question.length - 1) / 2)
+
+            if (numCorrect == question.length){
+                return "correct";
+            } else if (numCorrect >= requiredForSemi) {
+                return "semi-correct";
+            } else {
+                return "incorrect";
+            }
+        }
+
+        const submit = () => {
+            console.log(currentQuestion);
+            console.log(staff.notes);
+            
+            questionsRow.recordResult(compare(currentQuestion, staff.notes));
+            
+            const staffAnswer = new Staff("staff-answer", ABCJS);
+            for (let note of currentQuestion) {
+                staffAnswer.add(note);
+            }
+
+            currentQuestion = null;
+            nextButton.innerText = "Next";            
+        }
+
+        nextButton.onclick = nextQuestion;
+        submitButton.onclick = submit;
+
     </script>
 
     <style>
@@ -50,24 +105,43 @@
             display: flex;
             justify-content: center;
         }
-
-        #staff {
+        #next {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        #next > button {
+            width: 100px;
+            height: 50px;
+            margin-left: 15px;
+        }
+        .staff-wrapper {
             display: flex;
             justify-content: center;
             margin-bottom: 10px;
+            margin-top: 20px;
+            max-height: 128px;
+            height: 128px;
         }
     </style>
-  </head>
+</head>
 
-  <body>
-    <div class="questions"><questions-row></questions-row></div>
+<body>
+    <questions-row></questions-row>
 
-    <div id="staff"></div>
+    <div class="staff-wrapper">
+        <div id="staff"></div>
+    </div>
+    <div id="staff-answer"></div>
+    <div id="next">
+        <button id="button-next">Next</button>
+        <button id="button-submit">Submit</button>
+    </div>
 
     <div id="piano">
+        <piano-octave data-octave="4"></piano-octave>
         <piano-octave data-octave="5"></piano-octave>
-        <piano-octave data-octave="6"></piano-octave>
     </div>
-  </body>
-  
+</body>
+
 </html>

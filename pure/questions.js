@@ -5,14 +5,37 @@ const setup = async () => {
     const template = parser.parseFromString(html, 'text/html').querySelector('template')
   
     return class Questions extends HTMLElement {
-        constructor() { super() }
+        idx = 0;
+        containerDiv;
+
+        constructor() { 
+            super();
+        }
 
         connectedCallback() {            
             const shadowRoot = this.attachShadow({ mode: "open" });
             const clone = template.content.cloneNode(true);
-            const containerDiv = clone.children[1];
+
+            this.containerDiv = clone.children[1];
 
             shadowRoot.appendChild(clone);
+        }
+
+        recordResult(result) {
+            let cls;
+
+            if (result === "correct") {
+                cls = "correct-answer";
+            } else if (result === "semi-correct") {
+                cls = 'semi-correct-answer';
+            } else if (result === "incorrect") {
+                cls = 'incorrect-answer';
+            } else {
+                throw Error(`Unknown result: ${result}`);
+            }
+
+            const child = this.containerDiv.children[this.idx++];
+            child.classList.add(cls);
         }
     }
   }
