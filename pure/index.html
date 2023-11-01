@@ -10,15 +10,20 @@
         import PianoOctave from './piano-octave.js';
         import Questions from './questions.js';
         import { start, stop, playSequence } from './sound.js';
-        import { nRandom, zip } from './utils.js';
+        import { nRandom, zip, range } from './utils.js';
         import { Staff } from './staff.js';
+        import { StaffVex } from './staff-vex.js';
+        import { generateQuestion } from './question-gen.js';
+                
                 
         if (!customElements.get('piano-octave')) {
             customElements.define('piano-octave', PianoOctave);
             customElements.define('questions-row', Questions);
-        }
+        }   
 
-        const staff = new Staff("staff", ABCJS);
+        const staff = new StaffVex("output");
+        const staffAnswer = new StaffVex("staff-answer");
+        // const staff = new Staff("staff", ABCJS);
 
         const octaves = document.getElementsByTagName('piano-octave');
         for (let octave of octaves) {
@@ -37,7 +42,6 @@
         staff.render();
 
         function onKeyDown(event) {
-            // console.log(event);
             // TODO The latter probably won't work on Windows, need to add platform-aware Ctrl handling.
             if (event.key === "Backspace" || (event.key === 'z' && event.metaKey)) {
                 staff.remove();
@@ -49,9 +53,7 @@
 
         window.onkeydown = onKeyDown;
 
-
         // Questions 
-        const notes = ["C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6"];
         let currentQuestion = null;
         const nextButton = document.getElementById("button-next");
         const submitButton = document.getElementById("button-submit");
@@ -59,15 +61,19 @@
 
         const nextQuestion = () => {
             if (currentQuestion === null) {
-                currentQuestion = nRandom(notes, 4);
+                currentQuestion = generateQuestion(4);
+                for (let _ of range(10)) {
+                    console.log(generateQuestion(4));
+                }
                 console.log('Question', currentQuestion);
                 nextButton.innerText = "Repeat";
             }
             staff.clear();
+            staffAnswer.clear();
             playSequence(currentQuestion);
         }
 
-        function compare(question, answer) {
+        const compare = (question, answer) => {
             const numCorrect = zip(question, answer).filter(([a, b]) => a === b).length;
             const requiredForSemi = Math.ceil((question.length - 1) / 2)
 
@@ -81,12 +87,8 @@
         }
 
         const submit = () => {
-            console.log(currentQuestion);
-            console.log(staff.notes);
-            
             questionsRow.recordResult(compare(currentQuestion, staff.notes));
             
-            const staffAnswer = new Staff("staff-answer", ABCJS);
             for (let note of currentQuestion) {
                 staffAnswer.add(note);
             }
@@ -119,9 +121,6 @@
             display: flex;
             justify-content: center;
             margin-bottom: 10px;
-            margin-top: 20px;
-            max-height: 128px;
-            height: 128px;
         }
     </style>
 </head>
@@ -129,10 +128,9 @@
 <body>
     <questions-row></questions-row>
 
-    <div class="staff-wrapper">
-        <div id="staff"></div>
-    </div>
-    <div id="staff-answer"></div>
+    <div class="staff-wrapper" id="output"></div>
+    <div class="staff-wrapper" id="staff-answer"></div>
+
     <div id="next">
         <button id="button-next">Next</button>
         <button id="button-submit">Submit</button>
