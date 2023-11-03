@@ -9,7 +9,7 @@ const setup = async () => {
 
         constructor() { super() }
 
-        connectedCallback() {            
+        connectedCallback() {
             const shadowRoot = this.attachShadow({ mode: "open" });
             const clone = template.content.cloneNode(true);
             const octave = this.attributes['data-octave'].nodeValue;

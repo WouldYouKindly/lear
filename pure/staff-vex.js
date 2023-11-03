@@ -27,7 +27,6 @@ export class StaffVex {
                 const rest = note.slice(0, -1);
                 const octave = note.slice(-1);
                 const text = rest + '/' + octave;
-                console.log('bool', octave === '5');
                 const n = new StaveNote({ keys: [text], duration: "q", auto_stem: true });
                 if (rest.includes('#')) {
                     n.addModifier(new Accidental("#"));

@@ -1,0 +1,31 @@
+<template id="white-key">
+    <style>
+        #container {
+            display: flex;
+            width: 50px;
+            position: relative;
+            background-color: pink;
+        }
+        .white {
+            background-color: rosybrown;
+            height: 180px;
+            width: 50px;
+            margin: 1px;
+            margin-bottom: 2px;
+        }
+        .white:hover {
+            background-color:rgb(162, 122, 122);
+        }
+        .white:active {
+            --dog: rgb(182, 134, 134);
+            background: linear-gradient(90deg, var(--dog), rosybrown, var(--dog));
+            height: 182px;
+            margin-bottom: 0;
+        }
+    </style>
+
+    <div id="container">
+        <div class="white"></div>
+    </div>
+    
+</template>
