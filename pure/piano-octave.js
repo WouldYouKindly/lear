@@ -29,7 +29,7 @@ const setup = async () => {
                 }
             }
             
-            containerDiv.querySelector('#octave-name').textContent = "C" + octave;
+            // containerDiv.querySelector('#octave-name').textContent = "C" + octave;
 
             shadowRoot.appendChild(clone);
         }

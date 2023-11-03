@@ -6,7 +6,7 @@
             position: relative;
             background-color: pink;
         }
-        .white {
+        .white:not(white-key) { /* tmp hack */
             background-color: rosybrown;
             height: 180px;
             width: 50px;
@@ -60,28 +60,28 @@
     </style>
 
     <div id="container">
-        <div class="white"><p id="octave-name">C%</p></div>
+        <white-key class="white" data-note-hint="C4"></white-key>
         <div class="black black0">
             <div class="blacksmall"></div>
         </div>
-        <div class="white"></div>
+        <white-key class="white"></white-key>
         <div class="black black1">
             <div class="blacksmall"></div>
         </div>
-        <div class="white"></div>
-        <div class="white"></div>
+        <white-key class="white"></white-key>
+        <white-key class="white"></white-key>
         <div class="black black2">
             <div class="blacksmall"></div>
         </div>
-        <div class="white"></div>
+        <white-key class="white"></white-key>
         <div class="black black3">
             <div class="blacksmall"></div>
         </div>
-        <div class="white"></div>
+        <white-key class="white"></white-key>
         <div class="black black4">
             <div class="blacksmall"></div>
         </div>
-        <div class="white"></div>
+        <white-key class="white"></white-key>
     </div>
 
 </template>
