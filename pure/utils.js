@@ -11,7 +11,6 @@ const compareArrays = (a, b) => a.length === b.length && a.every((el, idx) => el
 
 const zip = (a, b) => a.map((k, i) => [k, b[i]]);
 
-
 const randomInt = (min, max) => {
     min = Math.ceil(min);
     max = Math.floor(max);
