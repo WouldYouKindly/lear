@@ -24,13 +24,6 @@ const setup = async () => {
         attributeChangedCallback(name, oldValue, newValue) {
             if (name === "data-note-hint") {
                 this.noteHint = newValue;
-                if (this.containerDiv) {
-                    if (newValue === null) {
-                        this.containerDiv.querySelector('p').textContent = "";
-                    } else {
-                        this.containerDiv.querySelector('p').textContent = newValue;
-                    }
-                }
             }
         }
     }
