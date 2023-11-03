@@ -2,32 +2,7 @@
     <style type="text/css">
         #container {
             display: flex;
-            width: 350px;
             position: relative;
-            background-color: pink;
-        }
-        .white:not(white-key) { /* tmp hack */
-            background-color: rosybrown;
-            height: 180px;
-            width: 50px;
-            margin: 1px;
-            margin-bottom: 2px;
-        }
-        .white:hover {
-            background-color:rgb(162, 122, 122);
-        }
-        .white:active {
-            --dog: rgb(182, 134, 134);
-            background:  linear-gradient(90deg, var(--dog), rosybrown, var(--dog));
-            height: 182px;
-            margin-bottom: 0;
-        }
-        p {
-            position: relative;
-            top: 82%;
-            left: 35%;
-            color: rgb(110, 101, 101);
-            font-size: 80%;
         }
         .black {
             background-color: black;
@@ -60,28 +35,28 @@
     </style>
 
     <div id="container">
-        <white-key class="white" data-note-hint="C4"></white-key>
+        <white-key></white-key>
         <div class="black black0">
             <div class="blacksmall"></div>
         </div>
-        <white-key class="white"></white-key>
+        <white-key></white-key>
         <div class="black black1">
             <div class="blacksmall"></div>
         </div>
-        <white-key class="white"></white-key>
-        <white-key class="white"></white-key>
+        <white-key></white-key>
+        <white-key></white-key>
         <div class="black black2">
             <div class="blacksmall"></div>
         </div>
-        <white-key class="white"></white-key>
+        <white-key></white-key>
         <div class="black black3">
             <div class="blacksmall"></div>
         </div>
-        <white-key class="white"></white-key>
+        <white-key></white-key>
         <div class="black black4">
             <div class="blacksmall"></div>
         </div>
-        <white-key class="white"></white-key>
+        <white-key></white-key>
     </div>
 
 </template>
