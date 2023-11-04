@@ -57,21 +57,26 @@
 
         // Questions 
         let currentQuestion = null;
+        let possibleRange;
         const nextButton = document.getElementById("button-next");
         const submitButton = document.getElementById("button-submit");
         const questionsRow = document.getElementsByTagName('questions-row')[0];
 
         const nextQuestion = () => {
             if (currentQuestion === null) {
-                currentQuestion = generateQuestion(4);
-                for (let _ of range(10)) {
-                    console.log(generateQuestion(4));
-                }
+                [possibleRange, currentQuestion] = generateQuestion(4);
                 console.log('Question', currentQuestion);
                 nextButton.innerText = "Repeat";
             }
             staff.clear();
             staffAnswer.clear();
+
+            if (possibleRange.includes("A3") || possibleRange.includes("B3")) {
+                octaves[0].setAttribute("data-octave", "3");
+                octaves[1].setAttribute("data-octave", "4");
+                whiteKeys[0].setAttribute("data-note-hint", "C5")
+            }
+
             playSequence(currentQuestion);
         }
 

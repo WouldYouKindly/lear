@@ -4,14 +4,14 @@ import { range, choose, randomInt } from './utils.js';
 const notes = ["A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5"];
 
 
-function pickRange() {
+const pickRange = () => {
      // Ensure that after the first note there are 7 more in the vocal range of the user.
      const firstIdx = randomInt(0, notes.length - 8);
-     return notes.slice(firstIdx, firstIdx + 7);
+     return notes.slice(firstIdx, firstIdx + 8);
 }
 
 
-function generateQuestion(length) {
+const generateQuestion = (length) => {
     const allowed = pickRange()
 
     let choice = choose(allowed);
@@ -25,7 +25,7 @@ function generateQuestion(length) {
         result.push(choice);
     }
 
-    return result;
+    return [allowed, result];
 }
 
 export { generateQuestion }

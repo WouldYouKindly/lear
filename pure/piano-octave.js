@@ -14,9 +14,19 @@ const setup = async () => {
         connectedCallback() {
             const shadowRoot = this.attachShadow({ mode: "open" });
             const clone = template.content.cloneNode(true);
-            const containerDiv = clone.children[1];
+            this.containerDiv = clone.children[1];
 
-            const keys = Array.from(containerDiv.querySelectorAll('white-key, .black'));
+            this.registerNotes();
+
+            shadowRoot.appendChild(clone);
+        }
+
+        registerNotes() {
+            if (!this.containerDiv) {
+                return;
+            }
+
+            const keys = Array.from(this.containerDiv.querySelectorAll('white-key, .black'));
             for (let [index, key] of keys.entries()) {
                 key.onmousedown = (evt) => {
                     this.dispatchEvent(new CustomEvent("pianokeydown", {
@@ -30,16 +40,15 @@ const setup = async () => {
                 }
             }
             
-            containerDiv
+            this.containerDiv
               .querySelector('white-key')
               .setAttribute("data-note-hint", "C" + this.octave);
-
-            shadowRoot.appendChild(clone);
         }
 
         attributeChangedCallback(name, oldValue, newValue) {
             if (name === "data-octave") {
                 this.octave = newValue;
+                this.registerNotes();
             }
         }
     }

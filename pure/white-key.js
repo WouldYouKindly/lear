@@ -6,14 +6,28 @@ const setup = async () => {
   
     return class WhiteKey extends HTMLElement {
         static observedAttributes = ["data-note-hint", "data-standalone"];
-
-        constructor() { super() }
+        
+        constructor() { 
+            super();
+            this.connected = false;
+        }
 
         connectedCallback() {
             const shadowRoot = this.attachShadow({ mode: "open" });
             const clone = template.content.cloneNode(true);
 
             this.containerDiv = clone.children[1];
+
+            this.registerNote();
+
+            shadowRoot.appendChild(clone);
+        }
+
+        registerNote() {
+            if (!this.containerDiv) {
+                return;
+            }
+
             if (this.noteHint) {
                 this.containerDiv.querySelector('p').textContent = this.noteHint;
             }
@@ -34,14 +48,12 @@ const setup = async () => {
                     }));
                 }
             }
-
-            shadowRoot.appendChild(clone);
         }
 
         attributeChangedCallback(name, oldValue, newValue) {
-            console.log(name, oldValue, newValue);
             if (name === "data-note-hint") {
                 this.noteHint = newValue;
+                this.registerNote();
             } else if (name === 'data-standalone') {
                 this.standalone = true;
             }
