@@ -59,16 +59,18 @@
         // Questions 
         let currentQuestion = null;
         let possibleRange;
-        const nextButton = document.getElementById("button-next");
+        const nextRepeatButton = document.getElementById("button-next-repeat");
         const submitButton = document.getElementById("button-submit");
         const questionsRow = document.getElementsByTagName('questions-row')[0];
 
         const nextQuestion = () => {
-            if (currentQuestion === null) {
-                [possibleRange, currentQuestion] = generateQuestion(4);
-                console.log('Question', currentQuestion);
-                nextButton.innerText = "Repeat";
+            if (questionsRow.allAnswered) {
+                questionsRow.reset();
             }
+
+            [possibleRange, currentQuestion] = generateQuestion(4);
+            console.log('Question', currentQuestion);
+            nextRepeatButton.innerText = "Repeat";
             staff.clear();
             staffAnswer.clear();
 
@@ -81,20 +83,26 @@
                 octaves[1].setAttribute("data-octave", "5");
                 whiteKeys[0].setAttribute("data-note-hint", "C6");
             }
-
-            playSequence(currentQuestion);
+            
+            return currentQuestion;
         }
 
         const submit = () => {
-            questionsRow.recordResult(compare(currentQuestion, staff.notes));
             staffAnswer.add(...currentQuestion);
             addQuestion(currentQuestion, staff.notes);
 
+            questionsRow.recordResult(compare(currentQuestion, staff.notes));
+
             currentQuestion = null;
-            nextButton.innerText = "Next";
+            nextRepeatButton.innerText = "Next";
         }
 
-        nextButton.onclick = nextQuestion;
+        nextRepeatButton.onclick = () => {
+            if (!currentQuestion) {
+                currentQuestion = nextQuestion();
+            }
+            playSequence(currentQuestion);
+        };
         submitButton.onclick = submit;
 
         setupDB('lear').then(() => console.log('DB is ready'));
@@ -125,13 +133,13 @@
 </head>
 
 <body>
-    <questions-row n="12"></questions-row>
+    <questions-row n="2"></questions-row>
 
     <div class="staff-wrapper" id="output"></div>
     <div class="staff-wrapper" id="staff-answer"></div>
 
     <div id="next">
-        <button id="button-next">Next</button>
+        <button id="button-next-repeat">Next</button>
         <button id="button-submit">Submit</button>
     </div>
 
