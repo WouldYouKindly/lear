@@ -99,11 +99,7 @@
 
         const submit = () => {
             questionsRow.recordResult(compare(currentQuestion, staff.notes));
-            
-            for (let note of currentQuestion) {
-                staffAnswer.add(note);
-            }
-
+            staffAnswer.add(...currentQuestion);
             currentQuestion = null;
             nextButton.innerText = "Next";            
         }

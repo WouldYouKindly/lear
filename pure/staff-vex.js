@@ -57,12 +57,12 @@ export class StaffVex {
         voice.draw(this.context, stave);
     }
 
-    add(note) {
-        if (this.notes.length >= this.length) {
+    add(...notes) {
+        if (this.notes.length + notes.length > this.length) {
             console.log("Too many notes");
             return;
         }
-        this.notes.push(note);
+        this.notes.concat(notes);
         this.render();
     }
 
