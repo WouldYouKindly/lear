@@ -11,10 +11,11 @@
         import PianoOctave from './piano-octave.js';
         import Questions from './questions.js';
         import { start, stop, playSequence } from './sound.js';
-        import { nRandom, zip, range } from './utils.js';
+        import { nRandom, zip, range, compare } from './utils.js';
         import { Staff } from './staff.js';
         import { StaffVex } from './staff-vex.js';
         import { generateQuestion } from './question-gen.js';
+        import { setupDB, addQuestion, getQuestions } from './db.js';
                 
                 
         if (!customElements.get('piano-octave')) {
@@ -74,39 +75,29 @@
             if (possibleRange.includes("A3") || possibleRange.includes("B3")) {
                 octaves[0].setAttribute("data-octave", "3");
                 octaves[1].setAttribute("data-octave", "4");
-                whiteKeys[0].setAttribute("data-note-hint", "C5")
+                whiteKeys[0].setAttribute("data-note-hint", "C5");
             } else {
                 octaves[0].setAttribute("data-octave", "4");
                 octaves[1].setAttribute("data-octave", "5");
-                whiteKeys[0].setAttribute("data-note-hint", "C6")
+                whiteKeys[0].setAttribute("data-note-hint", "C6");
             }
 
             playSequence(currentQuestion);
         }
 
-        const compare = (question, answer) => {
-            const numCorrect = zip(question, answer).filter(([a, b]) => a === b).length;
-            const requiredForSemi = Math.ceil((question.length - 1) / 2)
-
-            if (numCorrect == question.length){
-                return "correct";
-            } else if (numCorrect >= requiredForSemi) {
-                return "semi-correct";
-            } else {
-                return "incorrect";
-            }
-        }
-
         const submit = () => {
             questionsRow.recordResult(compare(currentQuestion, staff.notes));
             staffAnswer.add(...currentQuestion);
+            addQuestion(currentQuestion, staff.notes);
+
             currentQuestion = null;
-            nextButton.innerText = "Next";            
+            nextButton.innerText = "Next";
         }
 
         nextButton.onclick = nextQuestion;
         submitButton.onclick = submit;
 
+        setupDB('lear').then(() => console.log('DB is ready'));
     </script>
 
     <style>

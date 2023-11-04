@@ -17,4 +17,19 @@ const randomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export { nRandom, randomInt, range, compareArrays, zip, choose }
+
+// More domain-specific stuffs.
+const compare = (question, answer) => {
+    const numCorrect = zip(question, answer).filter(([a, b]) => a === b).length;
+    const requiredForSemi = Math.ceil((question.length - 1) / 2)
+
+    if (numCorrect == question.length){
+        return "correct";
+    } else if (numCorrect >= requiredForSemi) {
+        return "semi-correct";
+    } else {
+        return "incorrect";
+    }
+}
+
+export { nRandom, randomInt, range, compareArrays, zip, choose, compare }

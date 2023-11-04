@@ -37,7 +37,7 @@ export class StaffVex {
         
         this.context.clear();
 
-        // Create a stave of width 400 at position 10, 40 on the canvas.
+        // Create a stave of width 600 at position 0,0 on the canvas.
         const stave = new Stave(0, 0, 600);
     
         // Add a clef and time signature.
@@ -50,7 +50,7 @@ export class StaffVex {
         const voice = new Voice({ num_beats: 4, beat_value: 4 });
         voice.addTickables(notes);
     
-        // Format and justify the notes to 400 pixels.
+        // Format and justify the notes to 550 pixels.
         new Formatter().joinVoices([voice]).format([voice], 550);
     
         // // Render voice
@@ -62,7 +62,8 @@ export class StaffVex {
             console.log("Too many notes");
             return;
         }
-        this.notes.concat(notes);
+        this.notes = this.notes.concat(notes);
+
         this.render();
     }
 

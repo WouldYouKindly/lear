@@ -9,7 +9,6 @@ const setup = async () => {
         
         constructor() { 
             super();
-            this.connected = false;
         }
 
         connectedCallback() {

@@ -12,7 +12,7 @@ const setup = async () => {
             super();
         }
 
-        connectedCallback() {            
+        connectedCallback() {
             const shadowRoot = this.attachShadow({ mode: "open" });
             const clone = template.content.cloneNode(true);
 
