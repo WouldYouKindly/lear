@@ -25,16 +25,16 @@
 
         const staff = new StaffVex("output");
         const staffAnswer = new StaffVex("staff-answer");
-        // const staff = new Staff("staff", ABCJS);
 
         const octaves = document.getElementsByTagName('piano-octave');
-        for (let octave of octaves) {
-            octave.addEventListener("pianokeydown", evt => {
+        const whiteKeys = document.getElementsByTagName('white-key');
+        for (let octaveOrKey of [...octaves, ...whiteKeys]) {
+            octaveOrKey.addEventListener("pianokeydown", evt => {
                 const note = evt.detail;
                 start(note);
                 staff.add(note);
             });
-            octave.addEventListener("pianokeyup", evt => stop());
+            octaveOrKey.addEventListener("pianokeyup", evt => stop());
         }
 
         // So that I can press a note, move cursor away from the keyboard and then release. 
@@ -143,7 +143,7 @@
     <div id="piano">
         <piano-octave data-octave="4"></piano-octave>
         <piano-octave data-octave="5"></piano-octave>
-        <white-key data-note-hint="C6"></white-key>
+        <white-key data-note-hint="C6" data-standalone="true"></white-key>
     </div>
 </body>
 

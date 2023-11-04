@@ -5,7 +5,7 @@ const setup = async () => {
     const template = parser.parseFromString(html, 'text/html').querySelector('template')
   
     return class WhiteKey extends HTMLElement {
-        static observedAttributes = ["data-note-hint"];
+        static observedAttributes = ["data-note-hint", "data-standalone"];
 
         constructor() { super() }
 
@@ -18,12 +18,32 @@ const setup = async () => {
                 this.containerDiv.querySelector('p').textContent = this.noteHint;
             }
 
+            if (this.standalone) {
+                if (!this.noteHint) {
+                    throw new Error("No note specified for a standalone key");
+                }
+
+                this.onmousedown = (evt) => {
+                    this.dispatchEvent(new CustomEvent("pianokeydown", {
+                        detail: this.noteHint
+                    }));
+                }
+                this.onmouseup = (evt) => {
+                    this.dispatchEvent(new CustomEvent("pianokeyup", {
+                        detail: this.noteHint
+                    }));
+                }
+            }
+
             shadowRoot.appendChild(clone);
         }
 
         attributeChangedCallback(name, oldValue, newValue) {
+            console.log(name, oldValue, newValue);
             if (name === "data-note-hint") {
                 this.noteHint = newValue;
+            } else if (name === 'data-standalone') {
+                this.standalone = true;
             }
         }
     }
