@@ -1,3 +1,6 @@
+import { range } from './utils.js';
+
+
 const setup = async () => {
     const parser = new DOMParser()
     const resp = await fetch('./questions.html')
@@ -5,6 +8,8 @@ const setup = async () => {
     const template = parser.parseFromString(html, 'text/html').querySelector('template')
   
     return class Questions extends HTMLElement {
+        static observedAttributes = ["n"];
+
         idx = 0;
         containerDiv;
 
@@ -18,7 +23,17 @@ const setup = async () => {
 
             this.containerDiv = clone.children[1];
 
+            for (let _ in range(this.n)) {
+                this.containerDiv.appendChild(this.containerDiv.children[0].cloneNode(true));
+            }
+
             shadowRoot.appendChild(clone);
+        }
+
+        attributeChangedCallback(name, oldValue, newValue) {
+            if (name === "n") {
+                this.n = parseInt(newValue);
+            }
         }
 
         recordResult(result) {
