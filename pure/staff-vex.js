@@ -4,7 +4,7 @@ import { range } from "./utils.js";
 const { Renderer, Stave, StaveNote, Voice, Formatter, GhostNote, Accidental } = Vex.Flow;
 
 
-export class StaffVex {
+export class StaffVex {    
     constructor(divId) {
         this.divId = divId;
         this.notes = [];
@@ -33,7 +33,7 @@ export class StaffVex {
                 }
                 return n;
             })
-            .concat(range(this.length - this.notes.length).map(_ => new GhostNote({ duration: "q" })));
+            .concat(range(Math.max(0, this.length - this.notes.length)).map(_ => new GhostNote({ duration: "q" })));
         
         this.context.clear();
 
@@ -58,7 +58,7 @@ export class StaffVex {
     }
 
     add(note) {
-        if (this.notes.length >= this.maxLength) {
+        if (this.notes.length >= this.length) {
             console.log("Too many notes");
             return;
         }
