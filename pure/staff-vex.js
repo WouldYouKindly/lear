@@ -15,7 +15,7 @@ export class StaffVex {
         const renderer = new Renderer(div, Renderer.Backends.SVG);
     
         // Configure the rendering context.
-        renderer.resize(500, 100);
+        renderer.resize(500, 120);
         this.context = renderer.getContext();
         
         this.render();
