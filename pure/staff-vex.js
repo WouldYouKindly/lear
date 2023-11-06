@@ -4,7 +4,7 @@ import { range } from "./utils.js";
 const { Renderer, Stave, StaveNote, Voice, Formatter, GhostNote, Accidental } = Vex.Flow;
 
 
-export class StaffVex {    
+export class Staff {    
     constructor(divId) {
         this.divId = divId;
         this.notes = [];

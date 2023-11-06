@@ -12,8 +12,7 @@
         import Questions from './questions.js';
         import { start, stop, playSequence } from './sound.js';
         import { nRandom, zip, range, compare } from './utils.js';
-        import { Staff } from './staff.js';
-        import { StaffVex } from './staff-vex.js';
+        import { Staff } from './staff-vex.js';
         import { generateQuestion } from './question-gen.js';
         import { Database } from './db.js';
 
@@ -27,25 +26,19 @@
             customElements.define('questions-row', Questions);
         } 
 
-        const staff = new StaffVex("output");
-        const staffAnswer = new StaffVex("staff-answer");
+        const staff = new Staff("output");
+        const staffAnswer = new Staff("staff-answer");
 
-        const octaves = document.getElementsByTagName('piano-octave');
-        const whiteKeys = document.getElementsByTagName('white-key');
-        for (let octaveOrKey of [...octaves, ...whiteKeys]) {
-            octaveOrKey.addEventListener("pianokeydown", evt => {
-                const note = evt.detail;
-                start(note);
-                staff.add(note);
-            });
-            octaveOrKey.addEventListener("pianokeyup", evt => stop());
-        }
-
+        document.addEventListener("pianokeydown", evt => {
+            const note = evt.detail;
+            start(note);
+            staff.add(note);
+        });
+        document.addEventListener("pianokeyup", evt => stop());
+        
         // So that I can press a note, move cursor away from the keyboard and then release. 
         // Without it, the note would keep going forever.
         document.onmouseup = stop;
-
-        staff.render();
 
         function onKeyDown(event) {
             // TODO The latter probably won't work on Windows, need to add platform-aware Ctrl handling.
@@ -76,6 +69,9 @@
             nextRepeatButton.innerText = "Repeat";
             staff.clear();
             staffAnswer.clear();
+            
+            const octaves = document.getElementsByTagName('piano-octave');
+            const whiteKeys = document.getElementsByTagName('white-key');
 
             if (possibleRange.includes("A3") || possibleRange.includes("B3")) {
                 octaves[0].setAttribute("data-octave", "3");
@@ -107,6 +103,8 @@
             playSequence(currentQuestion);
         };
         submitButton.onclick = submit;
+
+        staff.render();
     </script>
 
     <style>

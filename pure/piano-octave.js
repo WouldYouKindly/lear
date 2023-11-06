@@ -30,11 +30,13 @@ const setup = async () => {
             for (let [index, key] of keys.entries()) {
                 key.onmousedown = (evt) => {
                     this.dispatchEvent(new CustomEvent("pianokeydown", {
+                        bubbles: true,
                         detail: this.KEYS[index] + this.octave
                     }));
                 }
                 key.onmouseup = (evt) => {
                     this.dispatchEvent(new CustomEvent("pianokeyup", {
+                        bubbles: true,
                         detail: this.KEYS[index] + this.octave
                     }));
                 }
