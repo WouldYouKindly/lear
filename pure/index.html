@@ -4,7 +4,7 @@
 <head>
     <title>Lear</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/abcjs@6.0.0/dist/abcjs-basic-min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/abcjs@6.0.0/dist/abcjs-basic-min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/vexflow/build/cjs/vexflow.js"></script>
     <script type="module">
         import WhiteKey from './white-key.js';
@@ -15,9 +15,12 @@
         import { Staff } from './staff.js';
         import { StaffVex } from './staff-vex.js';
         import { generateQuestion } from './question-gen.js';
-        import { setupDB, addQuestion, getQuestions } from './db.js';
-                
-                
+        import { Database } from './db.js';
+
+        const db = await Database.open();
+        const lastSession = await db.getLastSession() || await db.createSession(10);
+        const questions = await db.getQuestions(lastSession.pk);
+
         if (!customElements.get('piano-octave')) {
             customElements.define('white-key', WhiteKey);
             customElements.define('piano-octave', PianoOctave);
@@ -104,8 +107,6 @@
             playSequence(currentQuestion);
         };
         submitButton.onclick = submit;
-
-        setupDB('lear').then(() => console.log('DB is ready'));
     </script>
 
     <style>
