@@ -16,9 +16,10 @@
         import { generateQuestion } from './question-gen.js';
         import { Database } from './db.js';
 
+        const numQuestions = 3;
         const db = await Database.open();
-        const lastSession = await db.getLastSession() || await db.createSession(10);
-        const questions = await db.getQuestions(lastSession.pk);
+        let currentSession = await db.getLastSession() || await db.createSession(numQuestions);
+        const questions = await db.getQuestions(currentSession.pk);
 
         if (!customElements.get('piano-octave')) {
             customElements.define('white-key', WhiteKey);
@@ -46,7 +47,6 @@
                 staff.remove();
             } else if (event.key === " ") {
                 event.preventDefault();
-                ;
             }
         }
 
@@ -63,6 +63,7 @@
         const nextQuestion = () => {
             if (questionsRow.allAnswered) {
                 questionsRow.reset();
+                currentSession = db.createSession(numQuestions);
             }
 
             [possibleRange, currentQuestion] = generateQuestion(4);
@@ -96,13 +97,13 @@
 
         submitButton.onclick = () => {
             staffAnswer.add(...currentQuestion);
-            db.saveQuestion(lastSession.pk, currentQuestion, staff.notes);
+            db.saveQuestion(currentSession.pk, currentQuestion, staff.notes);
             questionsRow.recordResult(currentQuestion, staff.notes);
 
             currentQuestion = null;
             nextRepeatButton.innerText = "Next";
         }
-        
+
         staff.render();
     </script>
 

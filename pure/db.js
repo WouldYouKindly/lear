@@ -35,11 +35,12 @@ class Database {
   }
 
   async createSession(numQuestions) {
-    return await this.db.add('sessions', {
+    await this.db.add('sessions', {
         ts: Date.now(),
         numQuestions,
         finished: false,
     });
+    return await this.getLastSession();
   }
   
   async saveQuestion(sessionId, question, answer) {
