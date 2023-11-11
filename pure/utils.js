@@ -20,6 +20,8 @@ const randomInt = (min, max) => {
 
 // More domain-specific stuffs.
 const compare = (question, answer) => {
+    console.log('Q', question);
+    console.log('A', answer);
     const numCorrect = zip(question, answer).filter(([a, b]) => a === b).length;
     const requiredForSemi = Math.ceil((question.length - 1) / 2)
 

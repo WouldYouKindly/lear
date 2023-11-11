@@ -11,7 +11,7 @@
         import PianoOctave from './piano-octave.js';
         import Questions from './questions.js';
         import { start, stop, playSequence } from './sound.js';
-        import { nRandom, zip, range, compare } from './utils.js';
+        import { nRandom, zip, range } from './utils.js';
         import { Staff } from './staff-vex.js';
         import { generateQuestion } from './question-gen.js';
         import { Database } from './db.js';
@@ -58,6 +58,7 @@
         const nextRepeatButton = document.getElementById("button-next-repeat");
         const submitButton = document.getElementById("button-submit");
         const questionsRow = document.getElementsByTagName('questions-row')[0];
+        questionsRow.update(questions);
 
         const nextQuestion = () => {
             if (questionsRow.allAnswered) {
@@ -86,24 +87,22 @@
             return currentQuestion;
         }
 
-        const submit = () => {
-            staffAnswer.add(...currentQuestion);
-            addQuestion(currentQuestion, staff.notes);
-
-            questionsRow.recordResult(compare(currentQuestion, staff.notes));
-
-            currentQuestion = null;
-            nextRepeatButton.innerText = "Next";
-        }
-
         nextRepeatButton.onclick = () => {
             if (!currentQuestion) {
                 currentQuestion = nextQuestion();
             }
             playSequence(currentQuestion);
         };
-        submitButton.onclick = submit;
 
+        submitButton.onclick = () => {
+            staffAnswer.add(...currentQuestion);
+            db.saveQuestion(lastSession.pk, currentQuestion, staff.notes);
+            questionsRow.recordResult(currentQuestion, staff.notes);
+
+            currentQuestion = null;
+            nextRepeatButton.innerText = "Next";
+        }
+        
         staff.render();
     </script>
 
@@ -132,7 +131,7 @@
 </head>
 
 <body>
-    <questions-row n="2"></questions-row>
+    <questions-row n="3"></questions-row>
 
     <div class="staff-wrapper" id="output"></div>
     <div class="staff-wrapper" id="staff-answer"></div>

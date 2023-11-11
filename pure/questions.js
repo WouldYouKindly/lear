@@ -1,4 +1,4 @@
-import { range } from './utils.js';
+import { range, compare } from './utils.js';
 
 
 const setup = async () => {
@@ -25,7 +25,7 @@ const setup = async () => {
 
             range(this.n - 1).forEach(() => {
                 this.containerDiv.appendChild(this.containerDiv.children[0].cloneNode(true));
-            })
+            });
 
             shadowRoot.appendChild(clone);
         }
@@ -41,13 +41,19 @@ const setup = async () => {
             return this.nextIdx == this.n;
         }
 
-        recordResult(result) {
+        update(results) {
+            for (let result of results) {
+                this.recordResult(result.question, result.answer);
+            }
+        }
+
+        recordResult(question, answer) {
             if (this.nextIdx + 1 > this.n) {
                 throw new Error('All questions have already been answered!');
             }
 
             const child = this.containerDiv.children[this.nextIdx++];
-            child.classList.add(this.classForResult(result));
+            child.classList.add(this.classForResult(compare(question, answer)));
         }
 
         reset() {
