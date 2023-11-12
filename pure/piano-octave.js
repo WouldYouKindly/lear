@@ -12,24 +12,23 @@ const setup = async () => {
         connectedCallback() {
             const shadowRoot = this.attachShadow({ mode: "open" });
             const clone = template.content.cloneNode(true);
-            this.containerDiv = clone.children[1];
+            shadowRoot.appendChild(clone);
 
             this.registerNotes();
-
-            shadowRoot.appendChild(clone);
         }
 
         registerNotes() {
-            if (!this.containerDiv) {
+            // shadowRoot can be null, because attributeChangedCallback fires before the connectedCallback. 
+            if (!this.shadowRoot) {
                 return;
             }
 
-            const keys = Array.from(this.containerDiv.querySelectorAll('white-key, black-key'));
+            const keys = Array.from(this.shadowRoot.querySelectorAll('white-key, black-key'));
             for (let [index, key] of keys.entries()) {
                 key.setAttribute("note", this.KEYS[index] + this.octave);
             }
             
-            this.containerDiv
+            this.shadowRoot
               .querySelector('white-key')
               .setAttribute("show-note-hint", "true");
         }

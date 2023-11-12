@@ -8,19 +8,21 @@ const setup = async () => {
         static observedAttributes = ["n"];
 
         nextIdx = 0;
-        containerDiv;
 
         connectedCallback() {
             const shadowRoot = this.attachShadow({ mode: "open" });
             const clone = template.content.cloneNode(true);
-
-            this.containerDiv = clone.children[1];
-
-            range(this.n - 1).forEach(() => {
-                this.containerDiv.appendChild(this.containerDiv.children[0].cloneNode(true));
-            });
-
             shadowRoot.appendChild(clone);
+            
+            // One box is already present in the template.
+            range(this.n - 1).forEach(() => {
+                const answerBox = this.shadowRoot.querySelector('.answer');
+                this.shadowRoot.getElementById("container").appendChild(answerBox.cloneNode(true));
+            });
+        }
+
+        get answerBoxes() {
+            return Array.from(this.shadowRoot.querySelectorAll('.answer'));
         }
 
         attributeChangedCallback(name, oldValue, newValue) {
@@ -45,15 +47,15 @@ const setup = async () => {
                 throw new Error('All questions have already been answered!');
             }
 
-            const child = this.containerDiv.children[this.nextIdx++];
-            child.classList.add(this.classForResult(compare(question, answer)));
+            const box = this.answerBoxes[this.nextIdx++];
+            box.classList.add(this.classForResult(compare(question, answer)));
         }
 
         reset() {
-            Array.from(this.containerDiv.children).forEach(child => {
-                child.classList.remove('correct-answer');
-                child.classList.remove('incorrect-answer');
-                child.classList.remove('semi-correct-answer');
+            this.answerBoxes.forEach(box => {
+                box.classList.remove('correct-answer');
+                box.classList.remove('incorrect-answer');
+                box.classList.remove('semi-correct-answer');
             });
             this.nextIdx = 0;
         }

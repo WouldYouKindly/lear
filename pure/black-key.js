@@ -9,16 +9,14 @@ const setup = async () => {
         connectedCallback() {
             const shadowRoot = this.attachShadow({ mode: "open" });
             const clone = template.content.cloneNode(true);
-
-            this.containerDiv = clone.children[1];
-            
-            this.registerNote();
-
             shadowRoot.appendChild(clone);
+
+            this.registerNote();
         }
 
         registerNote() {
-            if (!this.containerDiv || !this.note) {
+            // shadowRoot can be null, because attributeChangedCallback fires before the connectedCallback. 
+            if (!this.shadowRoot || !this.note) {
                 return;
             }
 
