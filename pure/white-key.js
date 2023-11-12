@@ -5,7 +5,7 @@ const setup = async () => {
     const template = parser.parseFromString(html, 'text/html').querySelector('template')
   
     return class WhiteKey extends HTMLElement {
-        static observedAttributes = ["data-note-hint", "data-standalone"];
+        static observedAttributes = ["note", "show-note-hint"];
         
         constructor() { 
             super();
@@ -16,7 +16,8 @@ const setup = async () => {
             const clone = template.content.cloneNode(true);
 
             this.containerDiv = clone.children[1];
-
+            
+            console.log('connected', this.note, this.containerDiv);
             this.registerNote();
 
             shadowRoot.appendChild(clone);
@@ -24,37 +25,41 @@ const setup = async () => {
 
         registerNote() {
             if (!this.containerDiv) {
+                console.log('returning');
                 return;
             }
 
-            if (this.noteHint) {
-                this.containerDiv.querySelector('p').textContent = this.noteHint;
+            if (this.showNoteHint && this.note) {
+                this.containerDiv.querySelector('p').textContent = this.note;
             }
 
-            if (this.standalone) {
-                if (!this.noteHint) {
-                    throw new Error("No note specified for a standalone key");
-                }
-
+            if (this.note) {
+                console.log('setting');
                 this.onmousedown = (evt) => {
+                    console.log('Event', this.note);
                     this.dispatchEvent(new CustomEvent("pianokeydown", {
-                        detail: this.noteHint
+                        detail: this.note,
+                        bubbles: true,
+                        composed: true,
                     }));
                 }
                 this.onmouseup = (evt) => {
                     this.dispatchEvent(new CustomEvent("pianokeyup", {
-                        detail: this.noteHint
+                        detail: this.note,
+                        bubbles: true,
+                        composed: true,
                     }));
                 }
             }
         }
 
         attributeChangedCallback(name, oldValue, newValue) {
-            if (name === "data-note-hint") {
-                this.noteHint = newValue;
+            if (name === "show-note-hint") {
+                this.showNoteHint = newValue;
+            } else if (name === "note") {
+                console.log('Note', newValue);
+                this.note = newValue;
                 this.registerNote();
-            } else if (name === 'data-standalone') {
-                this.standalone = true;
             }
         }
     }
