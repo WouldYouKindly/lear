@@ -1,9 +1,10 @@
 import { downloadTemplate } from './utils.js';
+import { Key } from './key.js';
 
 const setup = async () => {
     const template = await downloadTemplate('./white-key.html');
 
-    return class BlackKey extends HTMLElement {
+    return class WhiteKey extends Key {
         static observedAttributes = ["note", "show-note-hint"];
 
         connectedCallback() {
@@ -12,41 +13,21 @@ const setup = async () => {
             shadowRoot.appendChild(clone);
 
             this.registerNote();
+            this.changeNoteHint();
         }
 
-        registerNote() {
-            // shadowRoot can be null, because attributeChangedCallback fires before the connectedCallback. 
-            if (!this.shadowRoot || !this.note) {
-                return;
-            }
-
-            if (this.showNoteHint) {
+        changeNoteHint() {
+            if (this.shadowRoot && this.showNoteHint) {
                 this.shadowRoot.getElementById("note-hint").textContent = this.note;
-            }
-
-            this.onmousedown = (evt) => {
-                this.dispatchEvent(new CustomEvent("pianokeydown", {
-                    detail: this.note,
-                    bubbles: true,
-                    composed: true,
-                }));
-            }
-            this.onmouseup = (evt) => {
-                this.dispatchEvent(new CustomEvent("pianokeyup", {
-                    detail: this.note,
-                    bubbles: true,
-                    composed: true,
-                }));
             }
         }
 
         attributeChangedCallback(name, oldValue, newValue) {
             if (name === "show-note-hint") {
                 this.showNoteHint = newValue;
+                this.changeNoteHint();
             } else if (name === "note") {
                 this.note = newValue;
-                console.log('changed');
-
                 this.registerNote();
             }
         }
