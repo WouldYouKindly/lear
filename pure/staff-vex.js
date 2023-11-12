@@ -4,6 +4,13 @@ import { range } from "./utils.js";
 const { Renderer, Stave, StaveNote, Voice, Formatter, GhostNote, Accidental } = Vex.Flow;
 
 
+class HintNote {
+    constructor(note) {
+        this.note = note;
+    }
+}
+
+
 export class Staff {    
     constructor(divId) {
         this.divId = divId;
@@ -24,6 +31,14 @@ export class Staff {
     render() {
         const notes = this.notes
             .map(note => {
+                let isHint = false;
+                console.log(note);
+                if (note instanceof HintNote) {
+                    console.log('yes');
+                    note = note.note;
+                    isHint = true;
+                }
+
                 const rest = note.slice(0, -1);
                 const octave = note.slice(-1);
                 const text = rest + '/' + octave;
@@ -31,10 +46,14 @@ export class Staff {
                 if (rest.includes('#')) {
                     n.addModifier(new Accidental("#"));
                 }
+
+                if (isHint) {
+                    n.setStyle({fillStyle: "#b9afaf", strokeStyle: "#b9afaf"});
+                }
                 return n;
             })
             .concat(range(Math.max(0, this.length - this.notes.length)).map(_ => new GhostNote({ duration: "q" })));
-        
+
         this.context.clear();
 
         // Create a stave of width 600 at position 0,0 on the canvas.
@@ -58,12 +77,26 @@ export class Staff {
     }
 
     add(...notes) {
+        if (this.notes.length === 1 && this.notes[0] instanceof HintNote) {
+            this.notes.pop();
+        }
+
         if (this.notes.length + notes.length > this.length) {
             console.log("Too many notes");
             return;
         }
+
         this.notes = this.notes.concat(notes);
 
+        this.render();
+    }
+
+    addHint(note) {
+        if (this.notes.length !== 0) {
+            throw new Error('Trying to add a hint note to a non-empty stave');
+        }
+
+        this.notes.push(new HintNote(note));
         this.render();
     }
 

@@ -8,27 +8,44 @@ const setup = async () => {
         static observedAttributes = ["note", "show-note-hint"];
 
         connectedCallback() {
-            const shadowRoot = this.attachShadow({ mode: "open" });
-            const clone = template.content.cloneNode(true);
-            shadowRoot.appendChild(clone);
-
-            this.registerNote();
-            this.changeNoteHint();
-        }
-
-        changeNoteHint() {
-            if (this.shadowRoot && this.showNoteHint) {
-                this.shadowRoot.getElementById("note-hint").textContent = this.note;
-            }
+            this.attachShadow({ mode: "open" });
+            this.render();
         }
 
         attributeChangedCallback(name, oldValue, newValue) {
             if (name === "show-note-hint") {
                 this.showNoteHint = newValue;
-                this.changeNoteHint();
             } else if (name === "note") {
                 this.note = newValue;
-                this.registerNote();
+            }
+
+            this.render();
+        }
+
+        render() {
+            if (!this.readyToRender) {
+                return;
+            }
+
+            const clone = template.content.cloneNode(true);
+
+            this.setNote(this.note);
+            this.setNoteHint(clone);
+
+            if (this.shadowRoot.children.length === 0) {
+                this.shadowRoot.appendChild(clone);
+            } else {
+                this.shadowRoot.replaceChildren(clone);
+            }
+        }
+
+        get readyToRender() {
+            return this.shadowRoot && this.note;
+        }
+
+        setNoteHint(clone) {
+            if (this.showNoteHint) {
+                clone.getElementById("note-hint").textContent = this.note;
             }
         }
     }

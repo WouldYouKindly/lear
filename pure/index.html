@@ -73,6 +73,8 @@
             nextRepeatButton.innerText = "Repeat";
             staff.clear();
             staffAnswer.clear();
+
+            staff.addHint(currentQuestion[0]);
             
             const octaves = document.getElementsByTagName('piano-octave');
             const whiteKeys = document.getElementsByTagName('white-key');
@@ -80,11 +82,11 @@
             if (possibleRange.includes("A3") || possibleRange.includes("B3")) {
                 octaves[0].setAttribute("data-octave", "3");
                 octaves[1].setAttribute("data-octave", "4");
-                whiteKeys[0].setAttribute("data-note-hint", "C5");
+                whiteKeys[0].setAttribute("note", "C5");
             } else {
                 octaves[0].setAttribute("data-octave", "4");
                 octaves[1].setAttribute("data-octave", "5");
-                whiteKeys[0].setAttribute("data-note-hint", "C6");
+                whiteKeys[0].setAttribute("note", "C6");
             }
             
             return currentQuestion;

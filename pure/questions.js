@@ -10,26 +10,39 @@ const setup = async () => {
         nextIdx = 0;
 
         connectedCallback() {
-            const shadowRoot = this.attachShadow({ mode: "open" });
+            this.attachShadow({ mode: "open" });
+            this.render();
+        }
+
+        attributeChangedCallback(name, oldValue, newValue) {
+            if (name === "n") {
+                this.n = parseInt(newValue);
+            }
+            this.render();
+        }
+
+        render() {
+            if (!this.readyToRender) {
+                return;
+            }
+
             const clone = template.content.cloneNode(true);
-            shadowRoot.appendChild(clone);
-            
+
             // One box is already present in the template.
             range(this.n - 1).forEach(() => {
-                const answerBox = this.shadowRoot.querySelector('.answer');
-                this.shadowRoot.getElementById("container").appendChild(answerBox.cloneNode(true));
+                const answerBox = clone.querySelector('.answer');
+                clone.getElementById("container").appendChild(answerBox.cloneNode(true));
             });
+
+            if (this.shadowRoot.children.length === 0) {
+                this.shadowRoot.appendChild(clone);
+            } else {
+                this.shadowRoot.replaceChildren(clone);
+            }
         }
 
         get answerBoxes() {
             return Array.from(this.shadowRoot.querySelectorAll('.answer'));
-        }
-
-        attributeChangedCallback(name, oldValue, newValue) {
-            // Only handle the initial assignment.
-            if (name === "n" && !this.n) {
-                this.n = parseInt(newValue);
-            }
         }
 
         get allAnswered() {
@@ -70,6 +83,10 @@ const setup = async () => {
             } else {
                 throw Error(`Unknown result: ${result}`);
             }
+        }
+
+        get readyToRender() {
+            return this.shadowRoot && this.n;
         }
     }
   }
