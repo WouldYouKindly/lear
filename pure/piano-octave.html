@@ -4,58 +4,29 @@
             display: flex;
             position: relative;
         }
-        .black {
-            background-color: black;
-            z-index: 3;
+        black-key {
+            z-index: 1;
             position: absolute;
-            height: 117px;
-            width: 32px;
         }
-        .black:hover .blacksmall {
-            background-color: rgb(63, 63, 63);
-        }
-        .black:active .blacksmall { 
-            background-color: rgb(43, 43, 43);
-            width: 78%;
-            height: 96%;
-        }
-        .black0 { left: 9%; }
-        .black1 { left: 24.5%; }
-        .black2 { left: 51.5%; }
-        .black3 { left: 66.7%; }
-        .black4 { left: 82%; }
-        .blacksmall {
-            position: relative;
-            margin-right: auto;
-            margin-left: auto;
-            width: 80%;
-            height: 95%;
-            background-color: rgb(43, 43, 43);
-        } 
+        black-key:nth-of-type(1) { left: 9%; }
+        black-key:nth-of-type(2) { left: 24.5%; }
+        black-key:nth-of-type(3) { left: 51.5%; }
+        black-key:nth-of-type(4) { left: 66.7%; }
+        black-key:nth-of-type(5) { left: 82%; }
     </style>
 
     <div id="container">
         <white-key></white-key>
-        <div class="black black0">
-            <div class="blacksmall"></div>
-        </div>
+        <black-key></black-key>
         <white-key></white-key>
-        <div class="black black1">
-            <div class="blacksmall"></div>
-        </div>
+        <black-key></black-key>
         <white-key></white-key>
         <white-key></white-key>
-        <div class="black black2">
-            <div class="blacksmall"></div>
-        </div>
+        <black-key></black-key>
         <white-key></white-key>
-        <div class="black black3">
-            <div class="blacksmall"></div>
-        </div>
+        <black-key></black-key>
         <white-key></white-key>
-        <div class="black black4">
-            <div class="blacksmall"></div>
-        </div>
+        <black-key></black-key>
         <white-key></white-key>
     </div>
 

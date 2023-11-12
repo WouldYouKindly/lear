@@ -1,21 +1,14 @@
-import { range, compare } from './utils.js';
+import { range, compare, downloadTemplate } from './utils.js';
 
 
 const setup = async () => {
-    const parser = new DOMParser()
-    const resp = await fetch('./questions.html')
-    const html = await resp.text()
-    const template = parser.parseFromString(html, 'text/html').querySelector('template')
-  
+    const template = await downloadTemplate('./questions.html')
+
     return class Questions extends HTMLElement {
         static observedAttributes = ["n"];
 
         nextIdx = 0;
         containerDiv;
-
-        constructor() { 
-            super();
-        }
 
         connectedCallback() {
             const shadowRoot = this.attachShadow({ mode: "open" });

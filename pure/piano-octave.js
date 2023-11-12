@@ -1,15 +1,13 @@
+import { downloadTemplate } from './utils.js';
+
+
 const setup = async () => {
-    const parser = new DOMParser()
-    const resp = await fetch('./piano-octave.html')
-    const content = await resp.text()
-    const template = parser.parseFromString(content, 'text/html').querySelector('template')
+    const template = await downloadTemplate('./piano-octave.html');
   
     return class PianoOctave extends HTMLElement {
         static observedAttributes = ["data-octave"];
 
         KEYS = ["C", 'C#', "D", 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-
-        constructor() { super() }
         
         connectedCallback() {
             const shadowRoot = this.attachShadow({ mode: "open" });
@@ -26,24 +24,9 @@ const setup = async () => {
                 return;
             }
 
-            const keys = Array.from(this.containerDiv.querySelectorAll('white-key, .black'));
+            const keys = Array.from(this.containerDiv.querySelectorAll('white-key, black-key'));
             for (let [index, key] of keys.entries()) {
                 key.setAttribute("note", this.KEYS[index] + this.octave);
-                
-                if (this.KEYS[index].endsWith("#")) {
-                    key.onmousedown = (evt) => {
-                        this.dispatchEvent(new CustomEvent("pianokeydown", {
-                            bubbles: true,
-                            detail: this.KEYS[index] + this.octave
-                        }));
-                    }
-                    key.onmouseup = (evt) => {
-                        this.dispatchEvent(new CustomEvent("pianokeyup", {
-                            bubbles: true,
-                            detail: this.KEYS[index] + this.octave
-                        }));
-                    }
-                }
             }
             
             this.containerDiv

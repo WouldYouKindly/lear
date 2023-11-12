@@ -17,6 +17,11 @@ const randomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+const downloadTemplate = async (name) => {
+    const resp = await fetch(name);
+    const html = await resp.text();
+    return new DOMParser().parseFromString(html, 'text/html').querySelector('template');
+}
 
 // More domain-specific stuffs.
 const compare = (question, answer) => {
@@ -34,4 +39,4 @@ const compare = (question, answer) => {
     }
 }
 
-export { nRandom, randomInt, range, compareArrays, zip, choose, compare }
+export { nRandom, randomInt, range, compareArrays, zip, choose, downloadTemplate, compare }
