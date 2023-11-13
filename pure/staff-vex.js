@@ -10,6 +10,7 @@ class HintNote {
     }
 }
 
+var scaled = false;
 
 export class Staff {    
     constructor(divId) {
@@ -22,8 +23,9 @@ export class Staff {
         const renderer = new Renderer(div, Renderer.Backends.SVG);
     
         // Configure the rendering context.
-        renderer.resize(500, 120);
+        renderer.resize(600, 80);
         this.context = renderer.getContext();
+        // this.context.scale(0.9, 0.9);
         
         this.render();
     }
@@ -32,9 +34,7 @@ export class Staff {
         const notes = this.notes
             .map(note => {
                 let isHint = false;
-                console.log(note);
                 if (note instanceof HintNote) {
-                    console.log('yes');
                     note = note.note;
                     isHint = true;
                 }
@@ -55,9 +55,10 @@ export class Staff {
             .concat(range(Math.max(0, this.length - this.notes.length)).map(_ => new GhostNote({ duration: "q" })));
 
         this.context.clear();
+        this.context.setViewBox(0, 0, 750, 100);
 
         // Create a stave of width 600 at position 0,0 on the canvas.
-        const stave = new Stave(0, 0, 600);
+        const stave = new Stave(80, 0, 600);
     
         // Add a clef and time signature.
         stave.addClef("treble");
