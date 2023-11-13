@@ -46,6 +46,9 @@
         function onKeyDown(event) {
             // TODO The latter probably won't work on Windows, need to add platform-aware Ctrl handling.
             if (event.key === "Backspace" || (event.key === 'z' && event.metaKey)) {
+                // Don't allow erasing after the question is answered.
+                if (!currentQuestion) return;
+                
                 staff.remove();
                 if (staff.empty && currentQuestion) {
                     staff.addHint(currentQuestion[0]);
