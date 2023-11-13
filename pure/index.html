@@ -60,8 +60,8 @@
         // Questions 
         let currentQuestion = null;
         let possibleRange;
-        const nextRepeatButton = document.getElementById("button-next-repeat");
-        const submitButton = document.getElementById("button-submit");
+        const nextSubmitButton = document.getElementById("button-next-submit");
+        const repeatButton = document.getElementById("button-repeat");
         const questionsRow = document.getElementsByTagName('questions-row')[0];
         questionsRow.update(questions);
 
@@ -73,7 +73,7 @@
 
             [possibleRange, currentQuestion] = generateQuestion(4);
             console.log('Question', currentQuestion);
-            nextRepeatButton.innerText = "Repeat";
+            nextSubmitButton.innerText = "Submit";
             staff.clear();
             staffAnswer.clear();
 
@@ -93,23 +93,27 @@
             }
             
             return currentQuestion;
-        }
-
-        nextRepeatButton.onclick = () => {
-            if (!currentQuestion) {
-                currentQuestion = nextQuestion();
-            }
-            playSequence(currentQuestion);
         };
 
-        submitButton.onclick = () => {
-            staffAnswer.add(...currentQuestion);
-            db.saveQuestion(currentSession.pk, currentQuestion, staff.notes);
-            questionsRow.recordResult(currentQuestion, staff.notes);
+        nextSubmitButton.onclick = () => {
+            if (!currentQuestion) {
+                currentQuestion = nextQuestion();
+                playSequence(currentQuestion);
+            } else {
+                staffAnswer.add(...currentQuestion);
+                db.saveQuestion(currentSession.pk, currentQuestion, staff.notes);
+                questionsRow.recordResult(currentQuestion, staff.notes);
 
-            currentQuestion = null;
-            nextRepeatButton.innerText = "Next";
-        }
+                currentQuestion = null;
+                nextSubmitButton.innerText = "Next";
+            }
+        };
+
+        repeatButton.onclick = () => {
+            if (currentQuestion) {
+                playSequence(currentQuestion);
+            }
+        };
 
         staff.render();
     </script>
@@ -145,8 +149,8 @@
     <div class="staff-wrapper" id="staff-answer"></div>
 
     <div id="next">
-        <button id="button-next-repeat">Next</button>
-        <button id="button-submit">Submit</button>
+        <button id="button-next-submit">Next</button>
+        <button id="button-repeat">Repeat</button>
     </div>
 
     <div id="piano">
