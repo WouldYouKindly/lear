@@ -47,6 +47,9 @@
             // TODO The latter probably won't work on Windows, need to add platform-aware Ctrl handling.
             if (event.key === "Backspace" || (event.key === 'z' && event.metaKey)) {
                 staff.remove();
+                if (staff.empty && currentQuestion) {
+                    staff.addHint(currentQuestion[0]);
+                }
             } else if (event.key === " ") {
                 event.preventDefault();
             }

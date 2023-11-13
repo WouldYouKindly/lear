@@ -10,8 +10,6 @@ class HintNote {
     }
 }
 
-var scaled = false;
-
 export class Staff {    
     constructor(divId) {
         this.divId = divId;
@@ -31,7 +29,28 @@ export class Staff {
     }
 
     render() {
-        const notes = this.notes
+        const notes = this.prepareNotes();
+
+        this.context.clear();
+
+        // Scale the staff.
+        this.context.setViewBox(0, 0, 750, 100);
+
+        const stave = new Stave(80, 0, 600);
+        stave.addClef("treble").setContext(this.context).draw();
+    
+        const voice = new Voice({ num_beats: 4, beat_value: 4 });
+        voice.addTickables(notes);
+    
+        // Format and justify the notes to 550 pixels.
+        new Formatter().joinVoices([voice]).format([voice], 550);
+    
+        // // Render voice
+        voice.draw(this.context, stave);
+    }
+
+    prepareNotes() {
+        return this.notes
             .map(note => {
                 let isHint = false;
                 if (note instanceof HintNote) {
@@ -53,28 +72,6 @@ export class Staff {
                 return n;
             })
             .concat(range(Math.max(0, this.length - this.notes.length)).map(_ => new GhostNote({ duration: "q" })));
-
-        this.context.clear();
-        this.context.setViewBox(0, 0, 750, 100);
-
-        // Create a stave of width 600 at position 0,0 on the canvas.
-        const stave = new Stave(80, 0, 600);
-    
-        // Add a clef and time signature.
-        stave.addClef("treble");
-    
-        // Connect it to the rendering context and draw!
-        stave.setContext(this.context).draw();
-    
-        // Create a voice in 4/4 and add above notes
-        const voice = new Voice({ num_beats: 4, beat_value: 4 });
-        voice.addTickables(notes);
-    
-        // Format and justify the notes to 550 pixels.
-        new Formatter().joinVoices([voice]).format([voice], 550);
-    
-        // // Render voice
-        voice.draw(this.context, stave);
     }
 
     add(...notes) {
@@ -110,5 +107,9 @@ export class Staff {
     clear() {
         this.notes = [];
         this.render();
+    }
+
+    get empty() {
+        return this.notes.length === 0;
     }
 }
