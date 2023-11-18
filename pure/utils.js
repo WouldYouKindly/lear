@@ -9,7 +9,7 @@ const nRandom = (seq, n) => range(n).map(() => choose(seq));
 
 const compareArrays = (a, b) => a.length === b.length && a.every((el, idx) => el === b[idx]);
 
-const zip = (a, b) => a.map((k, i) => [k, b[i]]);
+const zip = (a, b) => Array.from(a).map((k, i) => [k, b[i]]);
 
 const randomInt = (min, max) => {
     min = Math.ceil(min);
