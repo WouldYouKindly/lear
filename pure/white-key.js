@@ -39,6 +39,14 @@ const setup = async () => {
                 this.shadowRoot.getElementById("note-hint").textContent = this.note;
             }
         }
+
+        setActiveClass() {
+            this.shadowRoot.querySelector(".white").classList.add('white-active');
+        }
+
+        removeActiveClass() {
+            this.shadowRoot.querySelector(".white").classList.remove('white-active');
+        }
     }
   }
   

@@ -16,6 +16,14 @@ const setup = async () => {
                 this.note = newValue;
             }
         }
+
+        setActiveClass() {
+            this.shadowRoot.querySelector(".blacksmall").classList.add('blacksmall-active');
+        }
+
+        removeActiveClass() {
+            this.shadowRoot.querySelector(".blacksmall").classList.remove('blacksmall-active');
+        }
     }
   }
   

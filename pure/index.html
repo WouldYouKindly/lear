@@ -29,25 +29,31 @@
             customElements.define('questions-row', Questions);
         } 
 
-        window.pianoPlaying = false;
+        window.pianoPlaying = null;
 
         const staff = new Staff("output");
         const staffAnswer = new Staff("staff-answer");
 
         document.addEventListener("pianokeydown", evt => {
-            const note = evt.detail;
+            const {key, note} = evt.detail;
             start(note);
             staff.add(note);
-            window.pianoPlaying = true;
+            console.log('r', key);
+            window.pianoPlaying = key;
+            window.pianoPlaying.setActiveClass();
         });
         document.addEventListener("pianokeyup", evt =>{ 
             stop();
-            window.pianoPlaying = false;
+            window.pianoPlaying.removeActiveClass();
+            window.pianoPlaying = null;
         });
 
         document.addEventListener("pianokeyenter", evt => {
             if (window.pianoPlaying) {
-                const note = evt.detail;
+                const {key, note} = evt.detail;
+                if (key === window.pianoPlaying) return;
+                window.pianoPlaying.removeActiveClass();
+                window.pianoPlaying = key;
                 start(note);  // Automatically stops the previous note.
             }
         });
@@ -56,7 +62,10 @@
         // Without it, the note would keep going forever.
         document.onmouseup = () => {
             stop();
-            window.pianoPlaying = false;
+            if (window.pianoPlaying) {
+                window.pianoPlaying.removeActiveClass();
+                window.pianoPlaying = null;
+            }
         };
 
         function onKeyDown(event) {
