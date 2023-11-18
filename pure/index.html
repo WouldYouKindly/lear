@@ -48,13 +48,16 @@
         document.addEventListener("pianokeyenter", evt => {
             if (window.pianoPlaying) {
                 const note = evt.detail;
-                start(note);
+                start(note);  // Automatically stops the previous note.
             }
         });
         
         // So that I can press a note, move cursor away from the keyboard and then release. 
         // Without it, the note would keep going forever.
-        document.onmouseup = stop;
+        document.onmouseup = () => {
+            stop();
+            window.pianoPlaying = false;
+        };
 
         function onKeyDown(event) {
             // TODO The latter probably won't work on Windows, need to add platform-aware Ctrl handling.

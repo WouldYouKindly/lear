@@ -12,11 +12,15 @@ class Key extends HTMLElement {
             };
         };
 
-        this.onmousedown = evt => this.dispatchEvent(new CustomEvent("pianokeydown", data()));
-        this.onmouseup = evt => this.dispatchEvent(new CustomEvent("pianokeyup", data()))
-        this.onmouseenter = evt => this.dispatchEvent(new CustomEvent("pianokeyenter", data()));
-        this.onmouseleave = evt => this.dispatchEvent(new CustomEvent("pianokeyleft", data()));
+        this.onmousedown  = evt => this.dispatch("pianokeydown", data());
+        this.onmouseup    = evt => this.dispatch("pianokeyup", data());
+        this.onmouseenter = evt => this.dispatch("pianokeyenter", data());
+        this.onmouseleave = evt => this.dispatch("pianokeyleft", data());
+    }
+
+    dispatch(name, data) {
+        this.dispatchEvent(new CustomEvent(name, data));
     }
 }
 
-export {Key};
+export { Key };
