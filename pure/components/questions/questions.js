@@ -2,7 +2,7 @@ import { range, compare, downloadTemplate } from '../../utils.js';
 
 
 const setup = async () => {
-    const template = await downloadTemplate('./components/questions/questions.html')
+    const template = await downloadTemplate('questions')
 
     return class Questions extends HTMLElement {
         static observedAttributes = ["n"];

@@ -2,7 +2,7 @@ import { downloadTemplate, zip } from '../../utils.js';
 
 
 const setup = async () => {
-    const template = await downloadTemplate('./components/piano-octave/piano-octave.html');
+    const template = await downloadTemplate('piano-octave');
   
     return class PianoOctave extends HTMLElement {
         static observedAttributes = ["octave"];

@@ -18,7 +18,7 @@ const randomInt = (min, max) => {
 }
 
 const downloadTemplate = async (name) => {
-    const resp = await fetch(name);
+    const resp = await fetch(`./components/${name}/${name}.html`);
     const html = await resp.text();
     return new DOMParser().parseFromString(html, 'text/html').querySelector('template');
 }

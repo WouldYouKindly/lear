@@ -2,7 +2,7 @@ import { downloadTemplate } from '../../utils.js';
 import { Key } from '../key.js';
 
 const setup = async () => {
-    const template = await downloadTemplate('./components/black-key/black-key.html');
+    const template = await downloadTemplate('black-key');
 
     return class BlackKey extends Key {
         static observedAttributes = ["note"];
