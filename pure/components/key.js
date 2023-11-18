@@ -18,18 +18,8 @@ class Key extends HTMLElement {
 
         this.onmousedown  = evt => this.dispatch("pianokeydown", data());
         this.onmouseup    = evt => this.dispatch("pianokeyup", data());
-        this.onmouseenter = evt => {
-            this.dispatch("pianokeyenter", data());
-            if (window.pianoPlaying) {
-                this.setActiveClass();
-            }
-        };
-        this.onmouseleave = evt => {
-            this.dispatch("pianokeyleft", data());
-            if (!window.pianoPlaying) {
-                this.removeActiveClass();
-            }
-        };
+        this.onmouseenter = evt => this.dispatch("pianokeyenter", data());
+        this.onmouseleave = evt => this.dispatch("pianokeyleft", data());
     }
 
     dispatch(name, data) {
