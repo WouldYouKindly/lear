@@ -1,15 +1,23 @@
 class Key extends HTMLElement {
-    setNote(note) {
+    note;
+
+    constructor() {
+        super();
+
         this.onmousedown = (evt) => {
+            if (!this.note) throw new Error('Note was not set!');
+
             this.dispatchEvent(new CustomEvent("pianokeydown", {
-                detail: note,
+                detail: this.note,
                 bubbles: true,
                 composed: true,
             }));
         }
         this.onmouseup = (evt) => {
+            if (!this.note) throw new Error('Note was not set!');
+            
             this.dispatchEvent(new CustomEvent("pianokeyup", {
-                detail: note,
+                detail: this.note,
                 bubbles: true,
                 composed: true,
             }));

@@ -86,12 +86,12 @@
             const whiteKeys = document.getElementsByTagName('white-key');
 
             if (possibleRange.includes("A3") || possibleRange.includes("B3")) {
-                octaves[0].setAttribute("data-octave", "3");
-                octaves[1].setAttribute("data-octave", "4");
+                octaves[0].setAttribute("octave", "3");
+                octaves[1].setAttribute("octave", "4");
                 whiteKeys[0].setAttribute("note", "C5");
             } else {
-                octaves[0].setAttribute("data-octave", "4");
-                octaves[1].setAttribute("data-octave", "5");
+                octaves[0].setAttribute("octave", "4");
+                octaves[1].setAttribute("octave", "5");
                 whiteKeys[0].setAttribute("note", "C6");
             }
             
@@ -157,8 +157,8 @@
     </div>
 
     <div id="piano">
-        <piano-octave data-octave="4"></piano-octave>
-        <piano-octave data-octave="5"></piano-octave>
+        <piano-octave octave="4"></piano-octave>
+        <piano-octave octave="5"></piano-octave>
         <white-key note="C6" show-note-hint="true"></white-key>
     </div>
 </body>

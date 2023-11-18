@@ -1,21 +1,21 @@
-import { downloadTemplate } from './utils.js';
+import { downloadTemplate, zip } from './utils.js';
 
 
 const setup = async () => {
     const template = await downloadTemplate('./piano-octave.html');
   
     return class PianoOctave extends HTMLElement {
-        static observedAttributes = ["data-octave"];
+        static observedAttributes = ["octave"];
 
-        KEYS = ["C", 'C#', "D", 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        NOTES = ["C", 'C#', "D", 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
         
         connectedCallback() {
-            this.attachShadow({ mode: "open" });
+            this.attachShadow({ mode: "open" }).appendChild(template.content.cloneNode(true));
             this.render();
         }
 
         attributeChangedCallback(name, oldValue, newValue) {
-            if (name === "data-octave") {
+            if (name === "octave") {
                 this.octave = newValue;
             }
 
@@ -27,31 +27,27 @@ const setup = async () => {
                 return;
             }
 
-            const clone = template.content.cloneNode(true);
-
-            this.registerNotes(clone);
-
-            if (this.shadowRoot.children.length === 0) {
-                this.shadowRoot.appendChild(clone);
-            } else {
-                this.shadowRoot.replaceChildren(clone);
-            }
+            this.registerNotes();
         }
 
-        registerNotes(clone) {
-            const keys = Array.from(clone.querySelectorAll('white-key, black-key'));
+        registerNotes() {
+            const keys = this.shadowRoot.querySelectorAll('white-key, black-key');
 
-            // TODO use zip()
-            for (let [index, key] of keys.entries()) {
-                key.setAttribute("note", this.KEYS[index] + this.octave);
+            for (const [key, note] of zip(keys, this.notes)) {
+                key.setAttribute("note", note);
             }
             
-            clone.querySelector('white-key').setAttribute("show-note-hint", "true");
+            this.shadowRoot.querySelector('white-key').setAttribute("show-note-hint", "true");
         }
 
         get readyToRender() {
             // shadowRoot can be null, because attributeChangedCallback fires before the connectedCallback. 
             return this.shadowRoot && this.octave;
+        }
+
+        get notes() {
+            // ["C#", ...] => ["C#4", ...]
+            return this.NOTES.map(n => n + this.octave);
         }
     }
   }

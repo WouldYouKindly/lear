@@ -10,7 +10,7 @@ const setup = async () => {
         nextIdx = 0;
 
         connectedCallback() {
-            this.attachShadow({ mode: "open" });
+            this.attachShadow({ mode: "open" }).appendChild(template.content.cloneNode(true));
             this.render();
         }
 
@@ -26,19 +26,11 @@ const setup = async () => {
                 return;
             }
 
-            const clone = template.content.cloneNode(true);
-
             // One box is already present in the template.
             range(this.n - 1).forEach(() => {
-                const answerBox = clone.querySelector('.answer');
-                clone.getElementById("container").appendChild(answerBox.cloneNode(true));
+                const answerBox = this.shadowRoot.querySelector('.answer');
+                this.shadowRoot.getElementById("container").appendChild(answerBox.cloneNode(true));
             });
-
-            if (this.shadowRoot.children.length === 0) {
-                this.shadowRoot.appendChild(clone);
-            } else {
-                this.shadowRoot.replaceChildren(clone);
-            }
         }
 
         get answerBoxes() {
