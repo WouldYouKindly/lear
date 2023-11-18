@@ -1,8 +1,8 @@
-import { downloadTemplate } from './utils.js';
-import { Key } from './key.js';
+import { downloadTemplate } from '../../utils.js';
+import { Key } from '../key.js';
 
 const setup = async () => {
-    const template = await downloadTemplate('./white-key.html');
+    const template = await downloadTemplate('./components/white-key/white-key.html');
 
     return class WhiteKey extends Key {
         static observedAttributes = ["note", "show-note-hint"];

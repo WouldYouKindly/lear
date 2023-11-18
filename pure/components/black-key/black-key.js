@@ -1,8 +1,8 @@
-import { downloadTemplate } from './utils.js';
-import { Key } from './key.js';
+import { downloadTemplate } from '../../utils.js';
+import { Key } from '../key.js';
 
 const setup = async () => {
-    const template = await downloadTemplate('./black-key.html');
+    const template = await downloadTemplate('./components/black-key/black-key.html');
 
     return class BlackKey extends Key {
         static observedAttributes = ["note"];
