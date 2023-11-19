@@ -40,7 +40,7 @@
         const staffAnswer = new Staff("staff-answer");
 
         document.addEventListener("pianokeydown", evt => {
-            const {key, note} = evt.detail;
+            const {note} = evt.detail;
             staff.add(note);
         });
         
@@ -115,10 +115,21 @@
             justify-content: center;
             margin-bottom: 20px;
         }
-        #next > button {
+        #button-next-submit {
             width: 100px;
             height: 50px;
             margin-left: 15px;
+        }
+        #button-repeat {
+            width: 30px;
+            height: 30px;
+            margin-left: 15px;
+            align-self: center;
+        }
+        #button-repeat > img {
+            width: 20px;
+            height: 20px;
+            padding-top: 2px;
         }
         .staff-wrapper {
             display: flex;
@@ -136,7 +147,9 @@
 
     <div id="next">
         <button id="button-next-submit">Next</button>
-        <button id="button-repeat">Repeat</button>
+        <button id="button-repeat">
+            <img src="repeat.png" alt="Repeat">
+        </button>
     </div>
 
     <piano-keyboard></piano-keyboard>
