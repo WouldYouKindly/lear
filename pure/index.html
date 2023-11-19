@@ -33,6 +33,10 @@
 
         const nextSubmitButton = document.getElementById("button-next-submit");
         const repeatButton = document.getElementById("button-repeat");
+        const menuButton = document.getElementById("menu-button");
+        const menu = document.getElementById("menu-open");
+        const menuExitButton = document.getElementById("menu-exit");
+        const menuNewSessionButton = document.getElementById("new-session");
         const questionsRow = document.querySelector('questions-row');
         const keyboard = document.querySelector('piano-keyboard');
 
@@ -86,6 +90,17 @@
             return currentQuestion;
         };
 
+        const startNewSesssion = (nQuestions) => {
+            questionsRow.reset();
+            questionsRow.setAttribute("n", nQuestions);
+            currentSession = db.createSession(nQuestions);
+            staff.clear();
+            staffAnswer.clear();
+            lastQuestion = null;
+            currentQuestion = null;
+            nextSubmitButton.innerText = "Next";
+        }
+
         nextSubmitButton.onclick = () => {
             if (!currentQuestion) {
                 currentQuestion = nextQuestion();
@@ -106,6 +121,18 @@
             }
         };
 
+        menuButton.onclick = () => {
+            menu.style.display = 'block';
+        }
+        menuExitButton.onclick = () => {
+            menu.style.display = 'none';
+        }
+        menuNewSessionButton.onclick = () => {
+            const nQuestions = document.getElementById("nQuestions").valueAsNumber;
+            startNewSesssion(nQuestions);
+            menu.style.display = 'none';
+        }
+
         staff.render();
     </script>
 
@@ -123,7 +150,7 @@
         #button-repeat {
             width: 30px;
             height: 30px;
-            margin-left: 15px;
+            margin-left: 7px;
             align-self: center;
         }
         #button-repeat > img {
@@ -136,23 +163,71 @@
             justify-content: center;
             margin-bottom: 10px;
         }
+        #main {
+            display: flex;
+        }
+        #left {
+            width: 80px;
+        }
+        #right {
+            width: 80px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+        }
+        #right > button {
+            font-size: 10px;
+        }
+        #menu-open {
+            display: none;
+            width: 200px;
+            height: 300px;
+            z-index: 5;
+            background-color: #b0a7a7;
+            position: absolute;
+            left: 77%;
+        }
+        #menu-open > input {
+            background-color: #b0a7a7;
+            border: none;
+            -webkit-appearance: none; 
+            margin: 0; 
+            -moz-appearance: textfield;
+        }
     </style>
 </head>
 
 <body>
-    <questions-row n="15"></questions-row>
+    <div id="main">
+        <div id="left"></div>
 
-    <div class="staff-wrapper" id="output"></div>
-    <div class="staff-wrapper" id="staff-answer"></div>
+        <div id="center">
+            <questions-row n="15"></questions-row>
 
-    <div id="next">
-        <button id="button-next-submit">Next</button>
-        <button id="button-repeat">
-            <img src="repeat.png" alt="Repeat">
-        </button>
+            <div class="staff-wrapper" id="output"></div>
+            <div class="staff-wrapper" id="staff-answer"></div>
+
+            <div id="next">
+                <button id="button-next-submit">Next</button>
+                <button id="button-repeat">
+                    <img src="repeat.png" alt="Repeat">
+                </button>
+            </div>
+
+            <piano-keyboard></piano-keyboard>
+        </div>
+
+        <div id="right">
+            <button id="menu-button">Menu</button>
+        </div>
+
+        <div id="menu-open">
+            <span>Questions:</span><input id="nQuestions" type="number" value="15" />
+            <span>Notes:</span><input id="nNotes" type="number" value="4" />
+            <button id="new-session">New session</button>
+            <button id="menu-exit">Exit</button>
+        </div>
     </div>
-
-    <piano-keyboard></piano-keyboard>
 </body>
 
 </html>
