@@ -16,6 +16,9 @@ const setup = async () => {
 
         attributeChangedCallback(name, oldValue, newValue) {
             if (name === "n") {
+                if (this.nextIdx !== 0) {
+                    throw new Error("Cannot change the number of questions!");
+                }
                 this.n = parseInt(newValue);
             }
             this.render();
@@ -25,12 +28,22 @@ const setup = async () => {
             if (!this.readyToRender) {
                 return;
             }
+            
+            const boxesAlreadyPresent = this.shadowRoot.querySelectorAll('.answer');
+            const numBoxesAlreadyPresent = boxesAlreadyPresent.length;
 
-            // One box is already present in the template.
-            range(this.n - 1).forEach(() => {
-                const answerBox = this.shadowRoot.querySelector('.answer');
-                this.shadowRoot.getElementById("container").appendChild(answerBox.cloneNode(true));
-            });
+            if (numBoxesAlreadyPresent < this.n) {
+                const answerBox = boxesAlreadyPresent[0];
+                const container = this.shadowRoot.getElementById("container");
+                range(this.n - numBoxesAlreadyPresent).forEach(
+                    () => container.appendChild(answerBox.cloneNode(true))
+                );
+            } else if (numBoxesAlreadyPresent > this.n) {
+                Array.from(boxesAlreadyPresent)
+                  .reverse()
+                  .slice(0, numBoxesAlreadyPresent - this.n)
+                  .forEach(node => node.remove());
+            }
         }
 
         get answerBoxes() {
